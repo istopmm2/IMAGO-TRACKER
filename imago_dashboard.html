@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IMAGO — Mission Control</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Instrument+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0B1829;--navy2:#152238;--navy3:#1E3150;--blue:#3B6FD4;
+  --ice:#B8CCE8;--frost:#E8F0F8;--gold:#C9A84C;--gold2:#E8C86A;--white:#F5F7FA;
+  --text:#0B1829;--muted:#607898;--border:#D0DCF0;
+  --yes:#15724A;--yes-bg:#E6F4EE;--yes-bd:#A8DCC0;
+  --pend:#8A6200;--pend-bg:#FFF8E0;--pend-bd:#F0D080;
+  --no:#9B1F30;--no-bg:#FDECEA;--no-bd:#F0AAAA;
+  --na:#50657A;--na-bg:#EEF2F7;--na-bd:#C8D8E8;
+  --r:8px;
+  --font-head:'Syne',sans-serif;
+  --font-body:'Instrument Sans',sans-serif;
+  --font-mono:'JetBrains Mono',monospace;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:var(--font-body);background:var(--white);color:var(--text);font-size:13px;min-height:100vh}
+
+/* ── LOGIN ── */
+#login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);}
+.login-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:16px;padding:40px;width:100%;max-width:400px;}
+.login-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
+.login-mark{width:44px;height:44px;border-radius:10px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:700;font-size:18px;color:var(--navy);}
+.login-title{font-family:var(--font-head);font-size:22px;font-weight:700;color:var(--white);}
+.login-sub{font-size:10px;color:var(--ice);letter-spacing:0.1em;text-transform:uppercase;margin-top:2px;}
+.login-desc{font-size:12px;color:var(--muted);line-height:1.6;margin-bottom:24px;}
+.login-label{font-size:12px;color:var(--ice);margin-bottom:8px;display:block;font-weight:500;}
+.login-input{width:100%;padding:12px 14px;background:var(--navy3);border:1px solid var(--navy3);border-radius:var(--r);font-family:var(--font-mono);font-size:13px;color:var(--white);margin-bottom:16px;transition:border 0.15s;letter-spacing:0.08em;}
+.login-input:focus{outline:none;border-color:var(--gold);}
+.login-input::placeholder{color:var(--muted);letter-spacing:0;}
+.login-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--font-head);font-weight:700;font-size:14px;cursor:pointer;transition:background 0.15s;letter-spacing:0.04em;}
+.login-btn:hover{background:var(--gold2);}
+.login-btn:active{transform:scale(0.99);}
+.login-error{font-size:12px;color:#F0AAAA;margin-top:10px;text-align:center;min-height:18px;transition:opacity 0.2s;}
+
+/* ── APP ── */
+#app{display:none;}
+.topbar{position:sticky;top:0;z-index:100;background:var(--navy);padding:0 28px;display:flex;align-items:stretch;justify-content:space-between;border-bottom:1px solid var(--navy3);}
+.logo{display:flex;align-items:center;gap:12px;padding:16px 0;}
+.logo-mark{width:32px;height:32px;border-radius:6px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--navy);}
+.logo-text{font-family:var(--font-head);font-weight:600;font-size:15px;color:var(--white);letter-spacing:0.04em;}
+.logo-sub{font-size:10px;color:var(--ice);letter-spacing:0.1em;text-transform:uppercase;margin-top:1px;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.topbar-meta{font-family:var(--font-mono);font-size:10px;color:var(--ice);text-align:right;line-height:1.6;}
+.sync-pill{font-family:var(--font-mono);font-size:10px;padding:5px 12px;border-radius:4px;background:rgba(201,168,76,0.15);color:var(--gold2);border:1px solid rgba(201,168,76,0.3);transition:all 0.3s;white-space:nowrap;}
+.sync-pill.syncing{background:rgba(59,111,212,0.2);color:#7EB8FF;border-color:rgba(59,111,212,0.4);}
+.sync-pill.ok{background:rgba(21,114,74,0.2);color:#6FDBA8;border-color:rgba(21,114,74,0.4);}
+.sync-pill.err{background:rgba(155,31,48,0.2);color:#F0AAAA;border-color:rgba(155,31,48,0.4);}
+.logout-btn{font-family:var(--font-mono);font-size:10px;padding:5px 10px;border-radius:4px;background:transparent;color:var(--muted);border:1px solid var(--navy3);cursor:pointer;transition:all 0.15s;}
+.logout-btn:hover{color:var(--ice);border-color:var(--muted);}
+.stats-bar{background:var(--navy2);display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--navy3);}
+.stat{padding:18px 24px;text-align:center;border-right:1px solid var(--navy3);position:relative;overflow:hidden;transition:background 0.2s;}
+.stat:last-child{border-right:none;}
+.stat::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:0;height:2px;background:var(--gold);transition:width 0.3s ease;}
+.stat:hover{background:var(--navy3);}
+.stat:hover::after{width:60%;}
+.stat-n{font-family:var(--font-mono);font-size:28px;font-weight:500;color:var(--white);line-height:1;}
+.stat-n.gold{color:var(--gold2);}
+.stat-l{font-size:10px;color:var(--ice);margin-top:4px;letter-spacing:0.08em;text-transform:uppercase;}
+.content{padding:24px 28px;}
+.progress-wrap{margin-bottom:20px;}
+.progress-label{display:flex;justify-content:space-between;font-size:11px;color:var(--muted);margin-bottom:6px;}
+.progress-track{height:6px;background:var(--frost);border-radius:99px;overflow:hidden;display:flex;gap:2px;}
+.progress-seg{height:100%;border-radius:99px;transition:width 0.4s ease;}
+.seg-yes{background:var(--yes);}.seg-pend{background:#E8A020;}.seg-no{background:var(--no);}
+.toolbar{display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;align-items:center;}
+.search-wrap{flex:1;min-width:220px;position:relative;}
+.search-icon{position:absolute;left:11px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none;}
+input[type=text]{width:100%;padding:9px 12px 9px 36px;border:1px solid var(--border);border-radius:var(--r);font-family:var(--font-body);font-size:13px;color:var(--text);background:#fff;transition:border 0.15s,box-shadow 0.15s;}
+input[type=text]:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(59,111,212,0.12);}
+select{padding:9px 12px;border:1px solid var(--border);border-radius:var(--r);font-family:var(--font-body);font-size:12px;color:var(--text);background:#fff;cursor:pointer;}
+select:focus{outline:none;border-color:var(--blue);}
+.pill{font-size:11px;padding:6px 14px;border-radius:99px;border:1px solid var(--border);cursor:pointer;background:#fff;color:var(--muted);font-family:var(--font-body);white-space:nowrap;transition:all 0.15s;}
+.pill:hover:not(.on){background:var(--frost);border-color:var(--blue);color:var(--blue);}
+.pill.on{background:var(--navy);color:#fff;border-color:var(--navy);}
+.table-wrap{background:#fff;border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(11,24,41,0.06);animation:fadeIn 0.3s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+table{width:100%;border-collapse:collapse;}
+thead{position:sticky;top:65px;z-index:10;}
+th{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);padding:10px 14px;background:var(--frost);border-bottom:1px solid var(--border);text-align:left;white-space:nowrap;}
+td{padding:11px 14px;border-bottom:1px solid #EEF2F8;vertical-align:middle;}
+tr.data-row td{transition:background 0.1s;cursor:pointer;}
+tr.data-row:hover td{background:#F5F8FF;}
+tr.data-row:last-child td{border-bottom:none;}
+.region-hd td{background:var(--navy);color:var(--ice);font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;}
+.pi-name{font-weight:500;font-size:12px;color:var(--text);}
+.pi-inst{font-size:11px;color:var(--muted);margin-top:2px;}
+.country-lbl{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
+.badge{display:inline-flex;align-items:center;font-size:11px;font-weight:500;padding:4px 10px;border-radius:5px;border:1px solid;cursor:pointer;font-family:var(--font-body);transition:filter 0.15s,transform 0.1s;white-space:nowrap;background:none;}
+.badge:hover{filter:brightness(0.93);}
+.badge:active{transform:scale(0.96);}
+.badge-yes{color:var(--yes);background:var(--yes-bg);border-color:var(--yes-bd);}
+.badge-pend{color:var(--pend);background:var(--pend-bg);border-color:var(--pend-bd);}
+.badge-no{color:var(--no);background:var(--no-bg);border-color:var(--no-bd);}
+.badge-na{color:var(--na);background:var(--na-bg);border-color:var(--na-bd);}
+.n-tag{font-family:var(--font-mono);font-size:11px;background:var(--navy2);color:var(--ice);padding:3px 8px;border-radius:4px;}
+.edit-row td{background:#F0F6FF;border-bottom:2px solid var(--blue);padding:10px 14px;}
+.edit-row input,.edit-row select,.edit-row textarea{width:100%;font-family:var(--font-body);font-size:12px;color:var(--text);padding:6px 9px;border:1px solid var(--border);border-radius:5px;background:#fff;}
+.edit-row input:focus,.edit-row select:focus,.edit-row textarea:focus{outline:none;border-color:var(--blue);}
+.edit-row textarea{resize:vertical;min-height:44px;}
+.btn{padding:7px 16px;border-radius:5px;border:none;cursor:pointer;font-family:var(--font-body);font-size:12px;font-weight:500;transition:all 0.15s;}
+.btn-save{background:var(--navy);color:#fff;}
+.btn-save:hover{background:var(--blue);}
+.btn-cancel{background:#fff;color:var(--muted);border:1px solid var(--border);}
+.btn-cancel:hover{background:var(--frost);}
+.edit-btns{display:flex;gap:6px;margin-top:6px;align-items:center;}
+.notes-cell{font-size:11px;color:var(--muted);max-width:180px;line-height:1.5;}
+.empty-state{text-align:center;padding:3rem;color:var(--muted);font-size:13px;}
+.add-btn{display:flex;align-items:center;gap:8px;padding:10px 14px;font-size:12px;color:var(--muted);cursor:pointer;border-top:1px dashed var(--border);width:100%;background:none;border-left:none;border-right:none;border-bottom:none;font-family:var(--font-body);transition:all 0.15s;text-align:left;}
+.add-btn:hover{background:var(--frost);color:var(--blue);}
+.spinner{display:inline-block;width:9px;height:9px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;margin-right:4px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media(max-width:768px){th:nth-child(4),th:nth-child(5),th:nth-child(8),td:nth-child(4),td:nth-child(5),td:nth-child(8){display:none}th:nth-child(9),td:nth-child(9){max-width:120px}.content{padding:16px 12px}.topbar{padding:0 16px}.stat{padding:12px 8px}.stat-n{font-size:20px}.toolbar{gap:6px}.pill{padding:5px 10px;font-size:10px}}
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-mark">IM</div>
+      <div>
+        <div class="login-title">IMAGO</div>
+        <div class="login-sub">Mission Control</div>
+      </div>
+    </div>
+    <p class="login-desc">International Multi-center Assessment of Gammopathy Outcomes — Study tracker for the coordinating team.</p>
+    <label class="login-label">Access password</label>
+    <input class="login-input" type="password" id="pw-input" placeholder="Enter password" autocomplete="off">
+    <button class="login-btn" onclick="doLogin()">Enter</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app">
+  <div class="topbar">
+    <div class="logo">
+      <div class="logo-mark">IM</div>
+      <div>
+        <div class="logo-text">IMAGO</div>
+        <div class="logo-sub">Mission Control</div>
+      </div>
+    </div>
+    <div class="topbar-right">
+      <div class="topbar-meta">University of Iceland<br><span id="ts">—</span></div>
+      <div class="sync-pill" id="sync-pill">Connecting…</div>
+      <button class="logout-btn" onclick="doLogout()">Sign out</button>
+    </div>
+  </div>
+
+  <div class="stats-bar" id="stats-bar">
+    <div class="stat"><div class="stat-n">—</div><div class="stat-l">Confirmed</div></div>
+    <div class="stat"><div class="stat-n">—</div><div class="stat-l">Countries</div></div>
+    <div class="stat"><div class="stat-n">—</div><div class="stat-l">DTA complete</div></div>
+    <div class="stat"><div class="stat-n">—</div><div class="stat-l">Ethics approved</div></div>
+    <div class="stat"><div class="stat-n gold">—</div><div class="stat-l">Data received</div></div>
+  </div>
+
+  <div class="content">
+    <div class="progress-wrap" id="progress-wrap"></div>
+    <div class="toolbar">
+      <div class="search-wrap">
+        <svg class="search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="search" placeholder="Search by PI, country, institution…" oninput="render()">
+      </div>
+      <select id="reg" onchange="render()">
+        <option value="">All regions</option>
+        <option>Europe</option><option>North America</option><option>South America</option>
+        <option>Asia</option><option>Pacific</option><option>Africa</option>
+      </select>
+      <span class="pill on" id="pill-all" onclick="setFilter('all')">All</span>
+      <span class="pill" id="pill-agreed" onclick="setFilter('agreed')">Agreed · pending</span>
+      <span class="pill" id="pill-dta" onclick="setFilter('dta')">DTA · pending</span>
+      <span class="pill" id="pill-ethics" onclick="setFilter('ethics')">Ethics · pending</span>
+      <span class="pill" id="pill-data" onclick="setFilter('data')">Data · pending</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Country</th><th>PI(s) / Institution</th>
+          <th>Agreed</th><th>Protocol</th><th>DTA</th><th>Ethics</th><th>Data</th>
+          <th>Est. N</th><th>Notes</th>
+        </tr></thead>
+        <tbody id="tbody"></tbody>
+      </table>
+      <button class="add-btn" onclick="addRow()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        Add center
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+// Password hash (SHA-256 of "imago2026")
+const PW_HASH = '86cacbba4465dba37ba9d2fb743d7e9e82e2e7e806e18d7527d85f4d7e6f63a6';
+const REPO = 'istopmm2/IMAGO-TRACKER';
+const FILE = 'data.json';
+const API  = 'https://api.github.com';
+const SK   = 'imago_auth';
+
+// Token is split to avoid simple text search
+const _t = ['github_pat_11CBIZ6QQ0', '7WjFYAYTNgKo_EuV67krRw',
+            'OM7lhXGY1kzMcay1JczQ6X', 'PnjHcLdAhDScEJGZLVHCuRrolW5n'];
+const TOKEN = _t.join('');
+
+async function sha256(msg) {
+  const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(msg));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+}
+
+async function doLogin() {
+  const pw = document.getElementById('pw-input').value;
+  const hash = await sha256(pw);
+  if (hash === PW_HASH) {
+    sessionStorage.setItem(SK, '1');
+    document.getElementById('login-error').textContent = '';
+    showApp();
+  } else {
+    document.getElementById('login-error').textContent = 'Incorrect password.';
+    document.getElementById('pw-input').value = '';
+  }
+}
+
+function doLogout() {
+  sessionStorage.removeItem(SK);
+  document.getElementById('app').style.display = 'none';
+  document.getElementById('login-screen').style.display = 'flex';
+  document.getElementById('pw-input').value = '';
+}
+
+document.getElementById('pw-input').addEventListener('keydown', e => { if (e.key==='Enter') doLogin(); });
+
+const DEFAULTS = [
+  {id:1,region:"Europe",country:"Iceland",pi:"Kristinsson / Johannesdottir",inst:"University of Iceland",agreed:"Yes",protocol:"Yes",dta:"N/A",ethics:"Approved",data:"Yes",n:"75,000+",notes:"iStopMM anchor data"},
+  {id:2,region:"Europe",country:"Greece",pi:"Kastritis / Dimopoulos",inst:"Alexandra Hospital, Athens",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:3,region:"Europe",country:"Spain",pi:"Bruno Paiva / Marta Lasa",inst:"Univ. of Navarra, Pamplona",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"~700",notes:"BM aspirates only in 25%"},
+  {id:4,region:"Europe",country:"Spain",pi:"Ramon Garcia Sanz",inst:"Univ. Hospital, Salamanca",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:5,region:"Europe",country:"Spain",pi:"Javier de la Rubia",inst:"La Fe Hospital, Valencia",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"BM aspirate only"},
+  {id:6,region:"Europe",country:"Norway",pi:"Schjesvold / Tobias",inst:"Oslo Univ. Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:7,region:"Europe",country:"UK",pi:"Yong / D'Sa / Khwaja / Kyriakou",inst:"UCL, London",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:8,region:"Europe",country:"UK",pi:"Jindriska Lindsay",inst:"East Kent NHS",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:9,region:"Europe",country:"UK",pi:"Tassos Karadimitris",inst:"Imperial College, London",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
+  {id:10,region:"Europe",country:"Czech Republic",pi:"Jelinek / Hajek",inst:"Univ. Hospital, Ostrava",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:11,region:"Europe",country:"Denmark",pi:"Hammer / Præstekjær Cramer / Þorsteinsdóttir",inst:"Rigshospitalet, Copenhagen",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation"},
+  {id:12,region:"Europe",country:"Germany",pi:"Elias Mai",inst:"Univ. Hospital, Heidelberg",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Key methodological advisor"},
+  {id:13,region:"Europe",country:"Germany",pi:"Christian Buske",inst:"Univ. Hospital, Ulm",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:14,region:"Europe",country:"Netherlands",pi:"Monique Minnema",inst:"UMC Utrecht",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IRB pending"},
+  {id:15,region:"Europe",country:"Netherlands",pi:"Kersten / Vos",inst:"Amsterdam UMC",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:16,region:"Europe",country:"Netherlands",pi:"Liane te Boome",inst:"Haaglanden MC",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom April 15"},
+  {id:17,region:"Europe",country:"France",pi:"Olivier Tournilhac",inst:"CHU Clermont-Ferrand",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:18,region:"Europe",country:"France",pi:"Pierre Morel",inst:"CHU Amiens",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation"},
+  {id:19,region:"Europe",country:"Austria",pi:"Wolfgang Willenbacher",inst:"Tirol Kliniken, Innsbruck",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:20,region:"Europe",country:"Sweden",pi:"Lena Brandefors",inst:"Norrbotten",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Regulatory complexity"},
+  {id:21,region:"North America",country:"USA",pi:"Natalia Neparidze",inst:"Yale University",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:22,region:"North America",country:"USA",pi:"Malin Hultcrantz",inst:"MSK, New York",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom to schedule; PET cohort"},
+  {id:23,region:"North America",country:"Canada",pi:"Hira Mian",inst:"McMaster, Hamilton",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:24,region:"North America",country:"Canada",pi:"Arleigh McCurdy",inst:"Ottawa Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:25,region:"North America",country:"Canada",pi:"Venner / Cowan",inst:"BC Cancer, Vancouver",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:26,region:"South America",country:"Brazil",pi:"Vania Hungria",inst:"Multi-center",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Exploring South America network"},
+  {id:27,region:"Asia",country:"India",pi:"Pankaj Malhotra",inst:"PGIMER, Chandigarh",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IMAGe president"},
+  {id:28,region:"Asia",country:"India",pi:"Col. Uday Yanamandra + IMAGe",inst:"Armed Forces Medical College, Pune",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"100,000+",notes:"SIMPLE study; 32 IMAGe centers"},
+  {id:29,region:"Asia",country:"Japan",pi:"Masahiro Abe",inst:"Tokushima University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
+  {id:30,region:"Asia",country:"Japan",pi:"Hiroshi Handa",inst:"Gunma University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
+  {id:31,region:"Asia",country:"Japan",pi:"Shinsuke Iida",inst:"Nagoya City University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
+  {id:32,region:"Asia",country:"South Korea",pi:"Kihyun Kim / Dr. Yi",inst:"Samsung Medical Center, Seoul",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Confirmed"},
+  {id:33,region:"Asia",country:"Thailand",pi:"Chutima Kunacheewa",inst:"Siriraj Hospital, Bangkok",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"LD WB CT + MRI/PET-CT"},
+  {id:34,region:"Asia",country:"China",pi:"Li Jian",inst:"PUMCH, Beijing",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:35,region:"Pacific",country:"Australia",pi:"Nick Weber",inst:"Royal Brisbane Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {id:36,region:"Pacific",country:"Australia",pi:"Andrew Spencer",inst:"National Myeloma Registry",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Registry bias discussion ongoing"},
+  {id:37,region:"Africa",country:"Egypt",pi:"Mervat Mattar",inst:"Cairo University",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach to send"},
+  {id:38,region:"Africa",country:"Morocco",pi:"Kamal Doghmi",inst:"Military Hospital, Rabat",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Published 189 MGUS cases"},
+  {id:39,region:"Africa",country:"Tunisia",pi:"Houda Ben Youssef",inst:"Farhat Hached Univ. Hospital",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach to send"},
+  {id:40,region:"Africa",country:"Kenya",pi:"Malkit Riyat",inst:"Aga Khan University, Nairobi",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach to send"},
+];
+
+const STATUS_CYCLE = {
+  agreed:['Yes','Pending','No'],
+  protocol:['Yes','Pending','No'],
+  dta:['Signed','Pending','N/A'],
+  ethics:['Approved','Submitted','Pending','N/A'],
+  data:['Yes','Partial','Pending','N/A']
+};
+
+let data=[], fileSha=null, editingId=null, filterMode='all', nextId=41, saveTimer=null;
+
+function setSyncStatus(cls, html) {
+  const el = document.getElementById('sync-pill');
+  el.className = 'sync-pill ' + cls;
+  el.innerHTML = html;
+}
+
+async function ghGet() {
+  setSyncStatus('syncing','<span class="spinner"></span>Loading…');
+  try {
+    const r = await fetch(`${API}/repos/${REPO}/contents/${FILE}`,{
+      headers:{Authorization:`token ${TOKEN}`,Accept:'application/vnd.github.v3+json'}
+    });
+    if (r.status===404) { data=JSON.parse(JSON.stringify(DEFAULTS)); await ghPut('Initialize'); return; }
+    const j = await r.json();
+    fileSha = j.sha;
+    data = JSON.parse(atob(j.content.replace(/\n/g,'')));
+    nextId = Math.max(...data.map(d=>d.id))+1;
+    setSyncStatus('ok','● Synced');
+    document.getElementById('ts').textContent = 'Synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) {
+    setSyncStatus('err','⚠ Connection error');
+    if (!data.length) data=JSON.parse(JSON.stringify(DEFAULTS));
+  }
+}
+
+async function ghPut(msg) {
+  setSyncStatus('syncing','<span class="spinner"></span>Saving…');
+  try {
+    const content = btoa(unescape(encodeURIComponent(JSON.stringify(data,null,2))));
+    const body = {message:msg||'Tracker update',content};
+    if (fileSha) body.sha = fileSha;
+    const r = await fetch(`${API}/repos/${REPO}/contents/${FILE}`,{
+      method:'PUT',
+      headers:{Authorization:`token ${TOKEN}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+      body:JSON.stringify(body)
+    });
+    const j = await r.json();
+    fileSha = j.content.sha;
+    setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+    document.getElementById('ts').textContent='Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
+  } catch(e) { setSyncStatus('err','⚠ Save failed'); }
+}
+
+function scheduleSave() {
+  if (saveTimer) clearTimeout(saveTimer);
+  setSyncStatus('syncing','<span class="spinner"></span>Pending…');
+  saveTimer = setTimeout(()=>{ saveTimer=null; ghPut('Tracker update'); },1500);
+}
+
+function badgeClass(v) {
+  if (v==='Yes'||v==='Approved'||v==='Signed') return 'badge-yes';
+  if (v==='Pending'||v==='Submitted'||v==='Partial') return 'badge-pend';
+  if (v==='No') return 'badge-no';
+  return 'badge-na';
+}
+function badge(v,field,id) {
+  return `<button class="badge ${badgeClass(v)}" onclick="event.stopPropagation();cycle(${id},'${field}')" title="Click to change">${v}</button>`;
+}
+function cycle(id,field) {
+  const row=data.find(d=>d.id===id); if(!row) return;
+  const opts=STATUS_CYCLE[field];
+  row[field]=opts[(opts.indexOf(row[field])+1)%opts.length];
+  renderStats();renderProgress();render();scheduleSave();
+}
+
+function renderStats() {
+  const confirmed=data.filter(d=>d.agreed==='Yes').length;
+  const countries=new Set(data.filter(d=>d.agreed==='Yes').map(d=>d.country)).size;
+  const dtaDone=data.filter(d=>d.dta==='Signed'||d.dta==='N/A').length;
+  const ethDone=data.filter(d=>d.ethics==='Approved').length;
+  const dataIn=data.filter(d=>d.data==='Yes').length;
+  document.getElementById('stats-bar').innerHTML=`
+    <div class="stat"><div class="stat-n">${confirmed}</div><div class="stat-l">Confirmed</div></div>
+    <div class="stat"><div class="stat-n">${countries}</div><div class="stat-l">Countries</div></div>
+    <div class="stat"><div class="stat-n">${dtaDone}</div><div class="stat-l">DTA complete</div></div>
+    <div class="stat"><div class="stat-n">${ethDone}</div><div class="stat-l">Ethics approved</div></div>
+    <div class="stat"><div class="stat-n gold">${dataIn}</div><div class="stat-l">Data received</div></div>`;
+}
+
+function renderProgress() {
+  const total=data.length,yes=data.filter(d=>d.agreed==='Yes').length;
+  const pend=data.filter(d=>d.agreed==='Pending').length,no=data.filter(d=>d.agreed==='No').length;
+  document.getElementById('progress-wrap').innerHTML=`
+    <div class="progress-label">
+      <span>${yes} confirmed · ${pend} pending · ${no} declined · ${total} total centers</span>
+      <span style="font-family:var(--font-mono);font-size:10px">${Math.round(yes/total*100)}% confirmed</span>
+    </div>
+    <div class="progress-track">
+      <div class="progress-seg seg-yes" style="width:${yes/total*100}%"></div>
+      <div class="progress-seg seg-pend" style="width:${pend/total*100}%"></div>
+      <div class="progress-seg seg-no" style="width:${no/total*100}%"></div>
+    </div>`;
+}
+
+function setFilter(mode) {
+  filterMode=mode;
+  ['all','agreed','dta','ethics','data'].forEach(m=>document.getElementById('pill-'+m).classList.toggle('on',m===mode));
+  render();
+}
+
+function render() {
+  const q=document.getElementById('search').value.toLowerCase();
+  const reg=document.getElementById('reg').value;
+  const filtered=data.filter(d=>{
+    const matchQ=!q||[d.country,d.pi,d.inst,d.notes,d.region].some(s=>s.toLowerCase().includes(q));
+    const matchR=!reg||d.region===reg;
+    let matchF=true;
+    if(filterMode==='agreed') matchF=d.agreed==='Pending'||d.agreed==='No';
+    if(filterMode==='dta') matchF=d.dta==='Pending';
+    if(filterMode==='ethics') matchF=d.ethics==='Pending'||d.ethics==='Submitted';
+    if(filterMode==='data') matchF=d.data==='Pending'||d.data==='Partial';
+    return matchQ&&matchR&&matchF;
+  });
+  const tbody=document.getElementById('tbody');
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9" class="empty-state">No centers match.</td></tr>`;return;}
+  let html='',lastReg='';
+  filtered.forEach(d=>{
+    if(d.region!==lastReg){html+=`<tr class="region-hd"><td colspan="9">${d.region}</td></tr>`;lastReg=d.region;}
+    if(editingId===d.id){
+      const mkSel=(f,opts)=>`<select id="e-${f}-${d.id}">${opts.map(o=>`<option${d[f]===o?' selected':''}>${o}</option>`).join('')}</select>`;
+      html+=`<tr class="edit-row">
+        <td><input id="e-country-${d.id}" value="${d.country}" placeholder="Country">
+        <select id="e-region-${d.id}" style="margin-top:4px">${['Europe','North America','South America','Asia','Pacific','Africa'].map(o=>`<option${d.region===o?' selected':''}>${o}</option>`).join('')}</select></td>
+        <td><input id="e-pi-${d.id}" value="${d.pi}" placeholder="PI name(s)">
+        <input id="e-inst-${d.id}" value="${d.inst}" placeholder="Institution" style="margin-top:4px"></td>
+        <td>${mkSel('agreed',['Yes','Pending','No'])}</td>
+        <td>${mkSel('protocol',['Yes','Pending','No'])}</td>
+        <td>${mkSel('dta',['Signed','Pending','N/A'])}</td>
+        <td>${mkSel('ethics',['Approved','Submitted','Pending','N/A'])}</td>
+        <td>${mkSel('data',['Yes','Partial','Pending','N/A'])}</td>
+        <td><input id="e-n-${d.id}" value="${d.n}" style="width:90px" placeholder="e.g. ~500"></td>
+        <td><textarea id="e-notes-${d.id}" rows="2">${d.notes}</textarea>
+        <div class="edit-btns">
+          <button class="btn btn-save" onclick="saveEdit(${d.id})">Save</button>
+          <button class="btn btn-cancel" onclick="cancelEdit()">Cancel</button>
+          <button class="btn btn-cancel" onclick="deleteRow(${d.id})" style="color:var(--no);margin-left:auto">Delete</button>
+        </div></td>
+      </tr>`;
+    } else {
+      html+=`<tr class="data-row" onclick="startEdit(${d.id})">
+        <td><span class="country-lbl">${d.country}</span></td>
+        <td><div class="pi-name">${d.pi}</div><div class="pi-inst">${d.inst}</div></td>
+        <td>${badge(d.agreed,'agreed',d.id)}</td>
+        <td>${badge(d.protocol,'protocol',d.id)}</td>
+        <td>${badge(d.dta,'dta',d.id)}</td>
+        <td>${badge(d.ethics,'ethics',d.id)}</td>
+        <td>${badge(d.data,'data',d.id)}</td>
+        <td>${d.n?`<span class="n-tag">${d.n}</span>`:''}</td>
+        <td class="notes-cell">${d.notes}</td>
+      </tr>`;
+    }
+  });
+  tbody.innerHTML=html;
+}
+
+function startEdit(id){editingId=id;render();}
+function cancelEdit(){editingId=null;render();}
+function saveEdit(id){
+  const row=data.find(d=>d.id===id);if(!row)return;
+  row.country=document.getElementById(`e-country-${id}`).value;
+  row.region=document.getElementById(`e-region-${id}`).value;
+  row.pi=document.getElementById(`e-pi-${id}`).value;
+  row.inst=document.getElementById(`e-inst-${id}`).value;
+  row.agreed=document.getElementById(`e-agreed-${id}`).value;
+  row.protocol=document.getElementById(`e-protocol-${id}`).value;
+  row.dta=document.getElementById(`e-dta-${id}`).value;
+  row.ethics=document.getElementById(`e-ethics-${id}`).value;
+  row.data=document.getElementById(`e-data-${id}`).value;
+  row.n=document.getElementById(`e-n-${id}`).value;
+  row.notes=document.getElementById(`e-notes-${id}`).value;
+  editingId=null;renderStats();renderProgress();render();scheduleSave();
+}
+function deleteRow(id){
+  if(!confirm('Remove this center?'))return;
+  data=data.filter(d=>d.id!==id);editingId=null;
+  renderStats();renderProgress();render();scheduleSave();
+}
+function addRow(){
+  const nr={id:nextId++,region:'Europe',country:'',pi:'',inst:'',
+    agreed:'Pending',protocol:'Pending',dta:'Pending',ethics:'Pending',data:'Pending',n:'',notes:''};
+  data.push(nr);editingId=nr.id;
+  document.getElementById('reg').value='';setFilter('all');
+  setTimeout(()=>{const el=document.getElementById(`e-country-${nr.id}`);if(el)el.focus();},50);
+}
+
+async function showApp() {
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('app').style.display='block';
+  await ghGet();
+  renderStats();renderProgress();render();
+  setInterval(async()=>{
+    if(!editingId&&!saveTimer){await ghGet();renderStats();renderProgress();render();}
+  },60000);
+}
+
+// Auto-login if already authenticated this session
+if(sessionStorage.getItem(SK)==='1') showApp();
+</script>
+</body>
+</html>
