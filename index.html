@@ -193,7 +193,7 @@ tr.data-row:last-child td{border-bottom:none;}
         <thead><tr>
           <th>Country</th><th>PI(s) / Institution</th>
           <th>Agreed</th><th>Protocol</th><th>DTA</th><th>Ethics</th><th>Data</th>
-          <th>Est. N</th><th>Notes</th>
+          <th>Email</th><th>CRF received</th><th>Est. N</th><th>Notes</th>
         </tr></thead>
         <tbody id="tbody"></tbody>
       </table>
@@ -259,7 +259,8 @@ const STATUS_CYCLE = {
   protocol:['Yes','Pending','No'],
   dta:['Signed','Pending','N/A'],
   ethics:['Approved','Submitted','Pending','N/A'],
-  data:['Yes','Partial','Pending','N/A']
+  data:['Yes','Partial','Pending','N/A'],
+  crf:['Received','Pending','N/A']
 };
 
 let data=[], editingId=null, filterMode='all';
@@ -395,6 +396,8 @@ function render(){
         <td>${mkSel('dta',['Signed','Pending','N/A'])}</td>
         <td>${mkSel('ethics',['Approved','Submitted','Pending','N/A'])}</td>
         <td>${mkSel('data',['Yes','Partial','Pending','N/A'])}</td>
+        <td><input id="e-email-${d.id}" value="${d.email||''}" placeholder="email@institution.com"></td>
+        <td>${mkSel('crf',['Received','Pending','N/A'])}</td>
         <td><input id="e-n-${d.id}" value="${d.n||''}" style="width:90px" placeholder="e.g. ~500"></td>
         <td><textarea id="e-notes-${d.id}" rows="2">${d.notes||''}</textarea>
         <div class="edit-btns">
@@ -412,6 +415,8 @@ function render(){
         <td>${badge(d.dta,'dta',d.id)}</td>
         <td>${badge(d.ethics,'ethics',d.id)}</td>
         <td>${badge(d.data,'data',d.id)}</td>
+        <td style="font-size:11px;color:var(--muted)">${d.email||''}</td>
+        <td>${badge(d.crf||'Pending','crf',d.id)}</td>
         <td>${d.n?`<span class="n-tag">${d.n}</span>`:''}</td>
         <td class="notes-cell">${d.notes||''}</td>
       </tr>`;
@@ -437,6 +442,8 @@ async function saveEdit(id){
     data:document.getElementById(`e-data-${id}`).value,
     n:document.getElementById(`e-n-${id}`).value,
     notes:document.getElementById(`e-notes-${id}`).value,
+    email:document.getElementById(`e-email-${id}`).value,
+    crf:document.getElementById(`e-crf-${id}`).value,
   };
   Object.assign(row,updates);
   editingId=null;renderStats();renderProgress();render();
