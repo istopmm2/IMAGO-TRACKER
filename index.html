@@ -6,9 +6,7 @@
 <title>IMAGO — Mission Control</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700&family=Instrument+Sans:wght@300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
 :root {
   --navy:#0B1829;--navy2:#152238;--navy3:#1E3150;--blue:#3B6FD4;
@@ -44,7 +42,7 @@ html{scroll-padding-top:130px}body{font-family:var(--font-body);background:var(-
 
 /* APP */
 #app{display:none;}
-.topbar{position:sticky;top:0;z-index:200;background:var(--navy);padding:0 28px;display:flex;align-items:stretch;justify-content:space-between;border-bottom:1px solid var(--navy3);}
+.topbar{position:sticky;top:0;z-index:100;background:var(--navy);padding:0 28px;display:flex;align-items:stretch;justify-content:space-between;border-bottom:1px solid var(--navy3);}
 .logo{display:flex;align-items:center;gap:12px;padding:16px 0;}
 .logo-mark{width:32px;height:32px;border-radius:6px;background:var(--gold);display:flex;align-items:center;justify-content:center;font-family:var(--font-head);font-weight:700;font-size:14px;color:var(--navy);}
 .logo-text{font-family:var(--font-head);font-weight:600;font-size:15px;color:var(--white);letter-spacing:0.04em;}
@@ -57,15 +55,6 @@ html{scroll-padding-top:130px}body{font-family:var(--font-body);background:var(-
 .sync-pill.err{background:rgba(155,31,48,0.2);color:#F0AAAA;border-color:rgba(155,31,48,0.4);}
 .logout-btn{font-family:var(--font-mono);font-size:10px;padding:5px 10px;border-radius:4px;background:transparent;color:var(--muted);border:1px solid var(--navy3);cursor:pointer;transition:all 0.15s;}
 .logout-btn:hover{color:var(--ice);border-color:var(--muted);}
-
-/* VIEW TOGGLE */
-.view-toggle{display:flex;align-items:center;gap:2px;background:var(--navy3);border-radius:6px;padding:3px;}
-.view-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;border:none;background:transparent;color:var(--ice);font-family:var(--font-mono);font-size:10px;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
-.view-btn.active{background:var(--navy2);color:var(--gold2);box-shadow:0 1px 3px rgba(0,0,0,0.3);}
-.view-btn:hover:not(.active){color:var(--white);}
-.view-btn svg{opacity:0.7;}
-.view-btn.active svg{opacity:1;}
-
 .stats-bar{background:var(--navy2);display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--navy3);}
 .stat{padding:18px 24px;text-align:center;border-right:1px solid var(--navy3);position:relative;overflow:hidden;transition:background 0.2s;}
 .stat:last-child{border-right:none;}
@@ -128,53 +117,11 @@ tr.data-row:last-child td{border-bottom:none;}
 .add-btn:hover{background:var(--frost);color:var(--blue);}
 .spinner{display:inline-block;width:9px;height:9px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;margin-right:4px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* MAP VIEW */
-#map-view{display:none;padding:24px 28px;animation:fadeIn 0.3s ease;}
-.map-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
-.map-title{font-family:var(--font-head);font-size:16px;font-weight:600;color:var(--text);}
-.map-subtitle{font-size:12px;color:var(--muted);margin-top:2px;}
-.map-mode-toggle{display:flex;gap:4px;background:var(--frost);border:1px solid var(--border);border-radius:8px;padding:3px;}
-.map-mode-btn{padding:6px 16px;border-radius:5px;border:none;background:transparent;font-family:var(--font-body);font-size:12px;color:var(--muted);cursor:pointer;transition:all 0.15s;white-space:nowrap;}
-.map-mode-btn.active{background:#fff;color:var(--navy);font-weight:500;box-shadow:0 1px 3px rgba(11,24,41,0.1);}
-.map-mode-btn:hover:not(.active){color:var(--navy);}
-#leaflet-map{width:100%;height:520px;border-radius:12px;border:1px solid var(--border);overflow:hidden;box-shadow:0 1px 4px rgba(11,24,41,0.08);}
-.map-legend{display:flex;align-items:center;gap:20px;margin-top:14px;flex-wrap:wrap;}
-.legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
-.legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
-#progress-legend{display:none;}
-
-/* Leaflet popup custom style */
-.leaflet-popup-content-wrapper{background:var(--navy2);border:1px solid var(--navy3);border-radius:10px;box-shadow:0 4px 20px rgba(11,24,41,0.4);padding:0;overflow:hidden;}
-.leaflet-popup-content{margin:0;padding:0;min-width:220px;}
-.leaflet-popup-tip-container{display:none;}
-.leaflet-popup-close-button{color:var(--ice)!important;top:8px!important;right:8px!important;font-size:16px!important;}
-.popup-inner{padding:14px 16px;}
-.popup-region{font-family:var(--font-mono);font-size:9px;letter-spacing:0.1em;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
-.popup-country{font-family:var(--font-head);font-size:15px;font-weight:600;color:#fff;line-height:1.2;}
-.popup-pi{font-size:12px;color:var(--ice);margin-top:4px;line-height:1.4;}
-.popup-inst{font-size:11px;color:var(--muted);margin-top:2px;}
-.popup-score-bar{margin-top:10px;padding-top:10px;border-top:1px solid var(--navy3);}
-.popup-score-label{font-size:10px;color:var(--muted);margin-bottom:5px;font-family:var(--font-mono);}
-.popup-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
-.popup-badge{font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid;font-family:var(--font-body);}
-.popup-badge.yes{color:var(--yes);background:var(--yes-bg);border-color:var(--yes-bd);}
-.popup-badge.pend{color:var(--pend);background:var(--pend-bg);border-color:var(--pend-bd);}
-.popup-badge.no{color:var(--no);background:var(--no-bg);border-color:var(--no-bd);}
-.popup-badge.na{color:var(--na);background:var(--na-bg);border-color:var(--na-bd);}
-.popup-score-num{font-family:var(--font-mono);font-size:20px;font-weight:500;color:#fff;line-height:1;}
-.popup-score-of{font-size:11px;color:var(--muted);}
-.popup-score-row{display:flex;align-items:baseline;gap:4px;margin-bottom:6px;}
-.score-track{height:5px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;}
-.score-fill{height:100%;border-radius:99px;transition:width 0.3s;}
-
 @media(max-width:768px){
   th:nth-child(5),th:nth-child(6),th:nth-child(8),td:nth-child(5),td:nth-child(6),td:nth-child(8){display:none}
   .content{padding:16px 12px}.topbar{padding:0 16px}
   .stat{padding:12px 8px}.stat-n{font-size:20px}
   .toolbar{gap:6px}.pill{padding:5px 10px;font-size:10px}
-  #map-view{padding:16px 12px}
-  #leaflet-map{height:380px}
 }
 </style>
 </head>
@@ -209,16 +156,6 @@ tr.data-row:last-child td{border-bottom:none;}
       </div>
     </div>
     <div class="topbar-right">
-      <div class="view-toggle">
-        <button class="view-btn active" id="vbtn-table" onclick="switchView('table')">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="9" x2="9" y2="21"/></svg>
-          Table
-        </button>
-        <button class="view-btn" id="vbtn-map" onclick="switchView('map')">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-          Map
-        </button>
-      </div>
       <div class="topbar-meta">University of Iceland<br><span id="ts">—</span></div>
       <div class="sync-pill" id="sync-pill">Connecting…</div>
       <button class="logout-btn" onclick="doLogout()">Sign out</button>
@@ -233,8 +170,7 @@ tr.data-row:last-child td{border-bottom:none;}
     <div class="stat"><div class="stat-n gold">—</div><div class="stat-l">Data received</div></div>
   </div>
 
-  <!-- TABLE VIEW -->
-  <div class="content" id="table-view">
+  <div class="content">
     <div class="progress-wrap" id="progress-wrap"></div>
     <div class="toolbar">
       <div class="search-wrap">
@@ -267,35 +203,6 @@ tr.data-row:last-child td{border-bottom:none;}
       </button>
     </div>
   </div>
-
-  <!-- MAP VIEW -->
-  <div id="map-view">
-    <div class="map-header">
-      <div>
-        <div class="map-title">Global consortium map</div>
-        <div class="map-subtitle" id="map-subtitle">40+ centers across 6 continents</div>
-      </div>
-      <div class="map-mode-toggle">
-        <button class="map-mode-btn active" id="mmbtn-participants" onclick="setMapMode('participants')">Participants</button>
-        <button class="map-mode-btn" id="mmbtn-progress" onclick="setMapMode('progress')">Progress</button>
-      </div>
-    </div>
-    <div id="leaflet-map"></div>
-    <div class="map-legend">
-      <!-- Participants legend -->
-      <div id="participants-legend" class="map-legend">
-        <div class="legend-item"><div class="legend-dot" style="background:#3B6FD4"></div>Confirmed center</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#C9A84C;opacity:0.8"></div>Pending confirmation</div>
-      </div>
-      <!-- Progress legend -->
-      <div id="progress-legend" class="map-legend" style="display:none">
-        <div class="legend-item"><div class="legend-dot" style="background:#15724A"></div>5–6 / 6 complete</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#2E86C1"></div>3–4 / 6 complete</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#E8A020"></div>1–2 / 6 complete</div>
-        <div class="legend-item"><div class="legend-dot" style="background:#9B1F30"></div>0 / 6 complete</div>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
@@ -304,70 +211,48 @@ const SUPABASE_KEY = 'sb_publishable_lwGm2pHvBrdXObiqkfmkfQ_gnOVcgmo';
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// Country → [lat, lng]
-const COORDS = {
-  'Iceland':[64.9631,-19.0208],'Greece':[37.9838,23.7275],'Spain':[40.4168,-3.7038],
-  'Norway':[59.9139,10.7522],'UK':[51.5074,-0.1278],'Czech Republic':[49.8175,15.4730],
-  'Denmark':[55.6761,12.5683],'Germany':[51.1657,10.4515],'Netherlands':[52.3676,4.9041],
-  'France':[46.2276,2.2137],'Austria':[47.5162,14.5501],'Sweden':[60.1282,18.6435],
-  'USA':[37.0902,-95.7129],'Canada':[56.1304,-106.3468],'Brazil':[-14.2350,-51.9253],
-  'India':[20.5937,78.9629],'Japan':[36.2048,138.2529],'South Korea':[35.9078,127.7669],
-  'Thailand':[15.8700,100.9925],'China':[35.8617,104.1954],'Australia':[-25.2744,133.7751],
-  'Egypt':[26.8206,30.8025],'Morocco':[31.7917,-7.0926],'Tunisia':[33.8869,9.5375],
-  'Kenya':[-0.0236,37.9062]
-};
-
-// Jitter duplicate countries so pins don't stack
-const countryCount = {};
-function getCoords(country) {
-  const base = COORDS[country] || [20, 0];
-  countryCount[country] = (countryCount[country] || 0) + 1;
-  const offset = (countryCount[country] - 1) * 0.8;
-  const angle = (countryCount[country] - 1) * 137.5 * Math.PI / 180;
-  return [base[0] + offset * Math.sin(angle), base[1] + offset * Math.cos(angle)];
-}
-
 const DEFAULTS = [
-  {region:"Europe",country:"Iceland",pi:"Kristinsson / Johannesdottir",inst:"University of Iceland",agreed:"Yes",protocol:"Yes",dta:"N/A",ethics:"Approved",data:"Yes",n:"75,000+",notes:"iStopMM anchor data"},
-  {region:"Europe",country:"Greece",pi:"Kastritis / Dimopoulos",inst:"Alexandra Hospital, Athens",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Spain",pi:"Bruno Paiva / Marta Lasa",inst:"Univ. of Navarra, Pamplona",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"~700",notes:"BM aspirates only in 25%"},
-  {region:"Europe",country:"Spain",pi:"Ramon Garcia Sanz",inst:"Univ. Hospital, Salamanca",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Spain",pi:"Javier de la Rubia",inst:"La Fe Hospital, Valencia",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"BM aspirate only"},
-  {region:"Europe",country:"Norway",pi:"Schjesvold / Tobias",inst:"Oslo Univ. Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"UK",pi:"Yong / D'Sa / Khwaja / Kyriakou",inst:"UCL, London",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"UK",pi:"Jindriska Lindsay",inst:"East Kent NHS",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"UK",pi:"Tassos Karadimitris",inst:"Imperial College, London",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
+  {region:"Europe",country:"Iceland",pi:"Kristinsson / Johannesdottir",inst:"University of Iceland",agreed:"Yes",protocol:"Yes",dta:"N/A",ethics:"Approved",data:"Yes",n:"75,000+",notes:"iStopMM anchor data",email:"sigyngvi@hi.is",crf:"Pending"},
+  {region:"Europe",country:"Greece",pi:"Kastritis / Dimopoulos",inst:"Alexandra Hospital, Athens",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"ekastritis@gmail.com",crf:"Pending"},
+  {region:"Europe",country:"Spain",pi:"Bruno Paiva / Marta Lasa",inst:"Univ. of Navarra, Pamplona",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"~700",notes:"BM aspirates only in 25%",email:"bpaiva@unav.es",crf:"Pending"},
+  {region:"Europe",country:"Spain",pi:"Ramon Garcia Sanz",inst:"Univ. Hospital, Salamanca",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"rgarcias@usal.es",crf:"Pending"},
+  {region:"Europe",country:"Spain",pi:"Javier de la Rubia",inst:"La Fe Hospital, Valencia",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"BM aspirate only",email:"delarubia_jav@gva.es",crf:"Pending"},
+  {region:"Europe",country:"Norway",pi:"Schjesvold / Tobias",inst:"Oslo Univ. Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"tobias.s.slordahl@ntnu.no",crf:"Pending"},
+  {region:"Europe",country:"UK",pi:"Yong / D'Sa / Khwaja / Kyriakou",inst:"UCL, London",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"s.dsa@nhs.net",crf:"Pending"},
+  {region:"Europe",country:"UK",pi:"Jindriska Lindsay",inst:"East Kent NHS",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"jindriskalindsay@nhs.net",crf:"Pending"},
+  {region:"Europe",country:"UK",pi:"Tassos Karadimitris",inst:"Imperial College, London",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent",email:"a.karadimitris@imperial.ac.uk",crf:"Pending"},
   {region:"Europe",country:"Czech Republic",pi:"Jelinek / Hajek",inst:"Univ. Hospital, Ostrava",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Denmark",pi:"Hammer / Præstekjær Cramer / Þorsteinsdóttir",inst:"Rigshospitalet, Copenhagen",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation"},
-  {region:"Europe",country:"Germany",pi:"Elias Mai",inst:"Univ. Hospital, Heidelberg",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Key methodological advisor"},
-  {region:"Europe",country:"Germany",pi:"Christian Buske",inst:"Univ. Hospital, Ulm",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Netherlands",pi:"Monique Minnema",inst:"UMC Utrecht",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IRB pending"},
-  {region:"Europe",country:"Netherlands",pi:"Kersten / Vos",inst:"Amsterdam UMC",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Netherlands",pi:"Liane te Boome",inst:"Haaglanden MC",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom April 15"},
-  {region:"Europe",country:"France",pi:"Olivier Tournilhac",inst:"CHU Clermont-Ferrand",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"France",pi:"Pierre Morel",inst:"CHU Amiens",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation"},
-  {region:"Europe",country:"Austria",pi:"Wolfgang Willenbacher",inst:"Tirol Kliniken, Innsbruck",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Sweden",pi:"Lena Brandefors",inst:"Norrbotten",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Regulatory complexity"},
-  {region:"North America",country:"USA",pi:"Natalia Neparidze",inst:"Yale University",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"North America",country:"USA",pi:"Malin Hultcrantz",inst:"MSK, New York",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom to schedule; PET cohort"},
+  {region:"Europe",country:"Denmark",pi:"Hammer / Præstekjær Cramer / Þorsteinsdóttir",inst:"Rigshospitalet, Copenhagen",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation",email:"troels.hammer@regionh.dk",crf:"Pending"},
+  {region:"Europe",country:"Germany",pi:"Elias Mai",inst:"Univ. Hospital, Heidelberg",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Key methodological advisor",email:"elias.mai@med.uni-heidelberg.de",crf:"Pending"},
+  {region:"Europe",country:"Germany",pi:"Christian Buske",inst:"Univ. Hospital, Ulm",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"christian.buske@uni-ulm.de",crf:"Pending"},
+  {region:"Europe",country:"Netherlands",pi:"Monique Minnema",inst:"UMC Utrecht",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IRB pending",email:"M.C.Minnema@umcutrecht.nl",crf:"Pending"},
+  {region:"Europe",country:"Netherlands",pi:"Kersten / Vos",inst:"Amsterdam UMC",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"m.j.kersten@amsterdamumc.nl",crf:"Pending"},
+  {region:"Europe",country:"Netherlands",pi:"Liane te Boome",inst:"Haaglanden MC",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom April 15",email:"l.te.boome@haaglandenmc.nl",crf:"Pending"},
+  {region:"Europe",country:"France",pi:"Olivier Tournilhac",inst:"CHU Clermont-Ferrand",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"otournilhac@chu-clermontferrand.fr",crf:"Pending"},
+  {region:"Europe",country:"France",pi:"Pierre Morel",inst:"CHU Amiens",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation",email:"Morel.Pierre@chu-amiens.fr",crf:"Pending"},
+  {region:"Europe",country:"Austria",pi:"Wolfgang Willenbacher",inst:"Tirol Kliniken, Innsbruck",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"Wolfgang.Willenbacher@tirol-kliniken.at",crf:"Pending"},
+  {region:"Europe",country:"Sweden",pi:"Lena Brandefors",inst:"Norrbotten",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Regulatory complexity",email:"lena.brandefors@norrbotten.se",crf:"Pending"},
+  {region:"North America",country:"USA",pi:"Natalia Neparidze",inst:"Yale University",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"natalia.neparidze@yale.edu",crf:"Pending"},
+  {region:"North America",country:"USA",pi:"Malin Hultcrantz",inst:"MSK, New York",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom to schedule; PET cohort",email:"hultcram@mskcc.org",crf:"Pending"},
   {region:"North America",country:"Canada",pi:"Hira Mian",inst:"McMaster, Hamilton",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
   {region:"North America",country:"Canada",pi:"Arleigh McCurdy",inst:"Ottawa Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
   {region:"North America",country:"Canada",pi:"Venner / Cowan",inst:"BC Cancer, Vancouver",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
   {region:"South America",country:"Brazil",pi:"Vania Hungria",inst:"Multi-center",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Exploring South America network"},
-  {region:"Asia",country:"India",pi:"Pankaj Malhotra",inst:"PGIMER, Chandigarh",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IMAGe president"},
-  {region:"Asia",country:"India",pi:"Col. Uday Yanamandra + IMAGe",inst:"Armed Forces Medical College, Pune",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"100,000+",notes:"SIMPLE study; 32 IMAGe centers"},
-  {region:"Asia",country:"Japan",pi:"Masahiro Abe",inst:"Tokushima University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Asia",country:"Japan",pi:"Hiroshi Handa",inst:"Gunma University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Asia",country:"Japan",pi:"Shinsuke Iida",inst:"Nagoya City University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Asia",country:"South Korea",pi:"Kihyun Kim / Dr. Yi",inst:"Samsung Medical Center, Seoul",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Confirmed"},
+  {region:"Asia",country:"India",pi:"Pankaj Malhotra",inst:"PGIMER, Chandigarh",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IMAGe president",email:"malhotrapankaj@hotmail.com",crf:"Pending"},
+  {region:"Asia",country:"India",pi:"Col. Uday Yanamandra + IMAGe",inst:"Armed Forces Medical College, Pune",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"100,000+",notes:"SIMPLE study; 32 IMAGe centers",email:"udayj2yanamandra@gmail.com",crf:"Pending"},
+  {region:"Asia",country:"Japan",pi:"Masahiro Abe",inst:"Tokushima University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent",email:"masabe@tokushima-u.ac.jp",crf:"Pending"},
+  {region:"Asia",country:"Japan",pi:"Hiroshi Handa",inst:"Gunma University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent",email:"handahiroshi@gunma-u.ac.jp",crf:"Pending"},
+  {region:"Asia",country:"Japan",pi:"Shinsuke Iida",inst:"Nagoya City University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent",email:"iida@med.nagoya-cu.ac.jp",crf:"Pending"},
+  {region:"Asia",country:"South Korea",pi:"Kihyun Kim / Dr. Yi",inst:"Samsung Medical Center, Seoul",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Confirmed",email:"kihyunkimk@gmail.com",crf:"Pending"},
   {region:"Asia",country:"Thailand",pi:"Chutima Kunacheewa",inst:"Siriraj Hospital, Bangkok",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"LD WB CT + MRI/PET-CT"},
   {region:"Asia",country:"China",pi:"Li Jian",inst:"PUMCH, Beijing",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Pacific",country:"Australia",pi:"Nick Weber",inst:"Royal Brisbane Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
+  {region:"Pacific",country:"Australia",pi:"Nick Weber",inst:"Royal Brisbane Hospital",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"Nicholas.Weber@health.qld.gov.au",crf:"Pending"},
   {region:"Pacific",country:"Australia",pi:"Andrew Spencer",inst:"National Myeloma Registry",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Registry bias discussion ongoing"},
-  {region:"Africa",country:"Egypt",pi:"Mervat Mattar",inst:"Cairo University",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach to send"},
-  {region:"Africa",country:"Morocco",pi:"Kamal Doghmi",inst:"Military Hospital, Rabat",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Published 189 MGUS cases"},
-  {region:"Africa",country:"Tunisia",pi:"Houda Ben Youssef",inst:"Farhat Hached Univ. Hospital",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach to send"},
-  {region:"Africa",country:"Kenya",pi:"Malkit Riyat",inst:"Aga Khan University, Nairobi",agreed:"Pending",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach to send"},
+  {region:"Africa",country:"Egypt",pi:"Mervat Mattar",inst:"Kasr Al Ainy, Cairo University",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"mervatmattar@yahoo.com",crf:"Pending"},
+  {region:"Africa",country:"Morocco",pi:"Aissam El Maataoui",inst:"Ibn Zohr University / Agadir Teaching Hospital",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"a.elmaataoui@uiz.ac.ma",crf:"Pending"},
+  {region:"Africa",country:"Tunisia",pi:"Yosra Ben Youssef",inst:"Farhat Hached Hospital, Sousse",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"yosra.benyoussef@laposte.net",crf:"Pending"},
+  {region:"Africa",country:"Kenya",pi:"Malkit Riyat",inst:"Aga Khan University Hospital, Nairobi",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"malkit.riyat@aku.edu",crf:"Pending"},
+  {region:"Africa",country:"Ghana",pi:"Lily Paemka",inst:"University of Ghana, Accra",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"",email:"lpaemka@ug.edu.gh",crf:"Pending"},
 ];
 
 const STATUS_CYCLE = {
@@ -379,8 +264,7 @@ const STATUS_CYCLE = {
   crf:['Received','Pending','N/A']
 };
 
-let data=[], editingId=null, filterMode='all', currentView='table', mapMode='participants';
-let leafletMap=null, mapMarkers=[];
+let data=[], editingId=null, filterMode='all';
 
 function setSyncStatus(cls,html){
   const el=document.getElementById('sync-pill');
@@ -442,7 +326,6 @@ async function cycle(id,field){
   const opts=STATUS_CYCLE[field];
   row[field]=opts[(opts.indexOf(row[field])+1)%opts.length];
   renderStats();renderProgress();render();
-  if(currentView==='map') renderMap();
   setSyncStatus('syncing','<span class="spinner"></span>Saving…');
   const {error}=await sb.from('collaborators').update({[field]:row[field]}).eq('id',id);
   if(error){setSyncStatus('err','⚠ Save failed');}
@@ -498,10 +381,10 @@ function render(){
     return matchQ&&matchR&&matchF;
   });
   const tbody=document.getElementById('tbody');
-  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11" class="empty-state">No centers match.</td></tr>`;return;}
+  if(!filtered.length){tbody.innerHTML=`<tr><td colspan="9" class="empty-state">No centers match.</td></tr>`;return;}
   let html='',lastReg='';
   filtered.forEach(d=>{
-    if(d.region!==lastReg){html+=`<tr class="region-hd"><td colspan="11">${d.region}</td></tr>`;lastReg=d.region;}
+    if(d.region!==lastReg){html+=`<tr class="region-hd"><td colspan="9">${d.region}</td></tr>`;lastReg=d.region;}
     if(editingId===d.id){
       const mkSel=(f,opts)=>`<select id="e-${f}-${d.id}">${opts.map(o=>`<option${d[f]===o?' selected':''}>${o}</option>`).join('')}</select>`;
       html+=`<tr class="edit-row">
@@ -590,168 +473,18 @@ async function addRow(){
   setTimeout(()=>{const el=document.getElementById(`e-country-${inserted.id}`);if(el)el.focus();},50);
 }
 
-// ── VIEW SWITCHING ──────────────────────────────────────────────────────────
-
-function switchView(view){
-  currentView=view;
-  document.getElementById('table-view').style.display = view==='table' ? 'block' : 'none';
-  document.getElementById('map-view').style.display   = view==='map'   ? 'block' : 'none';
-  document.getElementById('vbtn-table').classList.toggle('active', view==='table');
-  document.getElementById('vbtn-map').classList.toggle('active', view==='map');
-  if(view==='map') initOrRefreshMap();
-}
-
-// ── MAP ─────────────────────────────────────────────────────────────────────
-
-function scoreCenter(d){
-  let s=0;
-  if(d.agreed==='Yes') s++;
-  if(d.protocol==='Yes') s++;
-  if(d.dta==='Signed'||d.dta==='N/A') s++;
-  if(d.ethics==='Approved') s++;
-  if(d.data==='Yes') s++;
-  if(d.crf==='Received') s++;
-  return s;
-}
-
-function scoreColor(s){
-  if(s>=5) return '#15724A';
-  if(s>=3) return '#2E86C1';
-  if(s>=1) return '#E8A020';
-  return '#9B1F30';
-}
-
-function makePinSvg(color, size=14){
-  const r = size/2;
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${size+8}" height="${size+8}" viewBox="0 0 ${size+8} ${size+8}">
-    <circle cx="${r+4}" cy="${r+4}" r="${r}" fill="${color}" stroke="white" stroke-width="2" opacity="0.92"/>
-  </svg>`;
-}
-
-function badgeHtml(label, v){
-  let cls='na';
-  if(v==='Yes'||v==='Approved'||v==='Signed') cls='yes';
-  else if(v==='Pending'||v==='Submitted'||v==='Partial') cls='pend';
-  else if(v==='No') cls='no';
-  return `<span class="popup-badge ${cls}">${label}: ${v}</span>`;
-}
-
-function initOrRefreshMap(){
-  if(!leafletMap){
-    leafletMap = L.map('leaflet-map', {
-      center:[20,10],
-      zoom:2,
-      minZoom:1,
-      maxZoom:8,
-      zoomControl:true,
-      attributionControl:false
-    });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-      subdomains:'abcd',
-      maxZoom:19
-    }).addTo(leafletMap);
-    L.control.attribution({prefix:'© OpenStreetMap · CartoDB'}).addTo(leafletMap);
-  }
-  renderMap();
-}
-
-function renderMap(){
-  // Clear existing markers
-  mapMarkers.forEach(m=>m.remove());
-  mapMarkers=[];
-
-  // Reset jitter counter
-  Object.keys(countryCount).forEach(k=>delete countryCount[k]);
-
-  const total=data.length;
-  const countries=new Set(data.map(d=>d.country)).size;
-  document.getElementById('map-subtitle').textContent=`${total} centers across ${countries} countries`;
-
-  data.forEach(d=>{
-    const coords=getCoords(d.country);
-    if(!coords) return;
-
-    let pinColor, pinSize;
-    if(mapMode==='participants'){
-      pinColor = d.agreed==='Yes' ? '#3B6FD4' : 'rgba(201,168,76,0.85)';
-      pinSize = d.agreed==='Yes' ? 14 : 11;
-    } else {
-      const s=scoreCenter(d);
-      pinColor=scoreColor(s);
-      pinSize=14;
-    }
-
-    const icon=L.divIcon({
-      html:makePinSvg(pinColor, pinSize),
-      className:'',
-      iconSize:[pinSize+8, pinSize+8],
-      iconAnchor:[(pinSize+8)/2, (pinSize+8)/2]
-    });
-
-    const score=scoreCenter(d);
-    const pct=Math.round(score/6*100);
-    const scoreBarColor=scoreColor(score);
-
-    const popupContent = mapMode==='participants'
-      ? `<div class="popup-inner">
-          <div class="popup-region">${d.region}</div>
-          <div class="popup-country">${d.country}</div>
-          <div class="popup-pi">${d.pi||''}</div>
-          <div class="popup-inst">${d.inst||''}</div>
-          ${d.n?`<div style="margin-top:8px;font-family:var(--font-mono);font-size:11px;color:var(--gold2)">Est. N: ${d.n}</div>`:''}
-          ${d.notes?`<div style="margin-top:6px;font-size:11px;color:var(--muted);line-height:1.4">${d.notes}</div>`:''}
-        </div>`
-      : `<div class="popup-inner">
-          <div class="popup-region">${d.region}</div>
-          <div class="popup-country">${d.country}</div>
-          <div class="popup-pi">${d.pi||''}</div>
-          <div class="popup-inst">${d.inst||''}</div>
-          <div class="popup-score-bar">
-            <div class="popup-score-row">
-              <span class="popup-score-num">${score}</span>
-              <span class="popup-score-of">/ 6 milestones</span>
-            </div>
-            <div class="score-track"><div class="score-fill" style="width:${pct}%;background:${scoreBarColor}"></div></div>
-            <div class="popup-badges" style="margin-top:8px">
-              ${badgeHtml('Agreed',d.agreed)}
-              ${badgeHtml('Protocol',d.protocol)}
-              ${badgeHtml('DTA',d.dta)}
-              ${badgeHtml('Ethics',d.ethics)}
-              ${badgeHtml('Data',d.data)}
-              ${badgeHtml('CRF',d.crf||'Pending')}
-            </div>
-          </div>
-        </div>`;
-
-    const marker=L.marker(coords,{icon}).addTo(leafletMap);
-    marker.bindPopup(popupContent,{maxWidth:280,minWidth:220,closeButton:true});
-    mapMarkers.push(marker);
-  });
-
-  // Toggle legend visibility
-  document.getElementById('participants-legend').style.display = mapMode==='participants' ? 'flex' : 'none';
-  document.getElementById('progress-legend').style.display = mapMode==='progress' ? 'flex' : 'none';
-}
-
-function setMapMode(mode){
-  mapMode=mode;
-  document.getElementById('mmbtn-participants').classList.toggle('active', mode==='participants');
-  document.getElementById('mmbtn-progress').classList.toggle('active', mode==='progress');
-  if(leafletMap) renderMap();
-}
-
-// ── BOOT ────────────────────────────────────────────────────────────────────
-
 async function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   await loadData();
   renderStats();renderProgress();render();
+  // Real-time sync
   sb.channel('collaborators').on('postgres_changes',{event:'*',schema:'public',table:'collaborators'},async()=>{
-    if(!editingId){await loadData();renderStats();renderProgress();render();if(currentView==='map')renderMap();}
+    if(!editingId){await loadData();renderStats();renderProgress();render();}
   }).subscribe();
 }
 
+// Check existing session
 sb.auth.getSession().then(({data:{session}})=>{
   if(session) showApp();
 });
