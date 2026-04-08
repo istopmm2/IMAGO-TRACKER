@@ -876,7 +876,6 @@ async function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
   await loadData();
-  await migrateData();
   renderStats();renderProgress();render();
   sb.channel('collaborators').on('postgres_changes',{event:'*',schema:'public',table:'collaborators'},async()=>{
     if(!editingId){await loadData();renderStats();renderProgress();render();if(currentView==='map')renderMap();}
