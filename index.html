@@ -413,9 +413,18 @@ function doLogout(){
 async function loadData(){
   setSyncStatus('syncing','<span class="spinner"></span>Loading…');
   const {data:rows,error}=await sb.from('collaborators').select('*').order('id');
-  if(error){setSyncStatus('err','⚠ Load failed');return;}
+  if(error){console.error('loadData error:',error);setSyncStatus('err','⚠ '+error.message);return;}
   if(rows.length===0){
-    await seedDefaults();
+    // Only seed if we can confirm table is truly empty (do a count check)
+    const {count,error:ce}=await sb.from('collaborators').select('*',{count:'exact',head:true});
+    if(ce){setSyncStatus('err','⚠ '+ce.message);return;}
+    if(count===0){
+      await seedDefaults();
+    } else {
+      // Table has data but select returned 0 — RLS is blocking reads
+      setSyncStatus('err','⚠ RLS blocking reads — disable in Supabase');
+      console.error('RLS is blocking reads. Go to Supabase → SQL Editor and run: ALTER TABLE collaborators DISABLE ROW LEVEL SECURITY;');
+    }
   } else {
     data=rows;
     setSyncStatus('ok','● Live');
@@ -559,8 +568,12 @@ async function cycle(id,field){
   if(currentView==='map') renderMap();
   setSyncStatus('syncing','<span class="spinner"></span>Saving…');
   const {error}=await sb.from('collaborators').update({[field]:row[field]}).eq('id',id);
-  if(error){setSyncStatus('err','⚠ Save failed');}
-  else{setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));}
+  if(error){
+    console.error('Supabase save error:', error);
+    setSyncStatus('err','⚠ '+error.message);
+  } else {
+    setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
+  }
 }
 
 function renderStats(){
@@ -681,7 +694,7 @@ async function saveEdit(id){
   editingId=null;renderStats();renderProgress();render();
   setSyncStatus('syncing','<span class="spinner"></span>Saving…');
   const {error}=await sb.from('collaborators').update(updates).eq('id',id);
-  if(error){setSyncStatus('err','⚠ Save failed');}
+  if(error){console.error('saveEdit error:',error);setSyncStatus('err','⚠ '+error.message);}
   else{setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));}
 }
 
