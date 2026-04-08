@@ -190,8 +190,6 @@ tr.data-row:last-child td{border-bottom:none;}
       </div>
     </div>
     <p class="login-desc">International Multi-center Assessment of Gammopathy Outcomes — Coordinating team access only.</p>
-    <label class="login-label">Email</label>
-    <input class="login-input" type="email" id="email-input" placeholder="your@email.com" autocomplete="email">
     <label class="login-label">Password</label>
     <input class="login-input" type="password" id="pw-input" placeholder="Password" autocomplete="current-password">
     <button class="login-btn" id="login-btn">Sign in</button>
@@ -390,19 +388,26 @@ function setSyncStatus(cls,html){
   el.innerHTML=html;
 }
 
-async function doLogin(){
-  const email=document.getElementById('email-input').value.trim();
-  const pw=document.getElementById('pw-input').value;
-  document.getElementById('login-error').textContent='';
-  const {error}=await sb.auth.signInWithPassword({email,password:pw});
-  if(error){document.getElementById('login-error').textContent=error.message;return;}
-  showApp();
+const ACCESS_PASSWORD = 'IMAGO2025';
+
+function doLogin(){
+  const pw = document.getElementById('pw-input').value;
+  document.getElementById('login-error').textContent = '';
+  if(pw === ACCESS_PASSWORD){
+    sessionStorage.setItem('imago_auth','1');
+    showApp();
+  } else {
+    document.getElementById('login-error').textContent = 'Incorrect password.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
 }
 
-async function doLogout(){
-  await sb.auth.signOut();
+function doLogout(){
+  sessionStorage.removeItem('imago_auth');
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').style.display='flex';
+  document.getElementById('pw-input').value='';
 }
 
 async function loadData(){
@@ -865,15 +870,12 @@ async function showApp(){
   }).subscribe();
 }
 
-sb.auth.getSession().then(({data:{session}})=>{
-  if(session) showApp();
-});
+if(sessionStorage.getItem('imago_auth')==='1') showApp();
 
 // All event listeners — no inline onclick attributes
 document.getElementById('login-btn').addEventListener('click', doLogin);
 document.getElementById('logout-btn').addEventListener('click', doLogout);
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
-document.getElementById('email-input').addEventListener('keydown', e=>{ if(e.key==='Enter') document.getElementById('pw-input').focus(); });
 document.getElementById('vbtn-table').addEventListener('click', ()=>switchView('table'));
 document.getElementById('vbtn-map').addEventListener('click', ()=>switchView('map'));
 document.getElementById('search').addEventListener('input', render);
