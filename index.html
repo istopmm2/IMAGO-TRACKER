@@ -614,6 +614,7 @@ function setFilter(mode){
 function render(){
   const q=document.getElementById('search').value.toLowerCase();
   const reg=document.getElementById('reg').value;
+  const REGION_ORDER = ['Europe','North America','South America','Asia','Pacific','Africa'];
   const filtered=data.filter(d=>{
     const matchQ=!q||[d.country,d.pi,d.inst,d.notes,d.region].some(s=>(s||'').toLowerCase().includes(q));
     const matchR=!reg||d.region===reg;
@@ -623,6 +624,10 @@ function render(){
     if(filterMode==='ethics') matchF=d.ethics==='Pending'||d.ethics==='Submitted';
     if(filterMode==='data') matchF=d.data==='Pending'||d.data==='Partial';
     return matchQ&&matchR&&matchF;
+  }).sort((a,b)=>{
+    const ri = r => REGION_ORDER.indexOf(r) === -1 ? 99 : REGION_ORDER.indexOf(r);
+    if(ri(a.region)!==ri(b.region)) return ri(a.region)-ri(b.region);
+    return (a.country||'').localeCompare(b.country||'');
   });
   const tbody=document.getElementById('tbody');
   if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11" class="empty-state">No centers match.</td></tr>`;return;}
