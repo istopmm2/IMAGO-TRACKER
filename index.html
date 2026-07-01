@@ -25,8 +25,6 @@
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-padding-top:130px}body{font-family:var(--font-body);background:var(--white);color:var(--text);font-size:13px;min-height:100vh}
-
-/* LOGIN */
 #login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;background:var(--navy);}
 .login-card{background:var(--navy2);border:1px solid var(--navy3);border-radius:16px;padding:40px;width:100%;max-width:400px;}
 .login-logo{display:flex;align-items:center;gap:14px;margin-bottom:32px;}
@@ -41,8 +39,6 @@ html{scroll-padding-top:130px}body{font-family:var(--font-body);background:var(-
 .login-btn{width:100%;padding:13px;background:var(--gold);color:var(--navy);border:none;border-radius:var(--r);font-family:var(--font-head);font-weight:700;font-size:14px;cursor:pointer;transition:background 0.15s;margin-top:4px;}
 .login-btn:hover{background:var(--gold2);}
 .login-error{font-size:12px;color:#F0AAAA;margin-top:10px;text-align:center;min-height:18px;}
-
-/* APP */
 #app{display:none;}
 .topbar{position:sticky;top:0;z-index:200;background:var(--navy);padding:0 28px;display:flex;align-items:stretch;justify-content:space-between;border-bottom:1px solid var(--navy3);}
 .logo{display:flex;align-items:center;gap:12px;padding:16px 0;}
@@ -57,15 +53,12 @@ html{scroll-padding-top:130px}body{font-family:var(--font-body);background:var(-
 .sync-pill.err{background:rgba(155,31,48,0.2);color:#F0AAAA;border-color:rgba(155,31,48,0.4);}
 .logout-btn{font-family:var(--font-mono);font-size:10px;padding:5px 10px;border-radius:4px;background:transparent;color:var(--muted);border:1px solid var(--navy3);cursor:pointer;transition:all 0.15s;}
 .logout-btn:hover{color:var(--ice);border-color:var(--muted);}
-
-/* VIEW TOGGLE */
 .view-toggle{display:flex;align-items:center;gap:2px;background:var(--navy3);border-radius:6px;padding:3px;}
 .view-btn{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:4px;border:none;background:transparent;color:var(--ice);font-family:var(--font-mono);font-size:10px;cursor:pointer;transition:all 0.15s;white-space:nowrap;}
 .view-btn.active{background:var(--navy2);color:var(--gold2);box-shadow:0 1px 3px rgba(0,0,0,0.3);}
 .view-btn:hover:not(.active){color:var(--white);}
 .view-btn svg{opacity:0.7;}
 .view-btn.active svg{opacity:1;}
-
 .stats-bar{background:var(--navy2);display:grid;grid-template-columns:repeat(5,1fr);border-bottom:1px solid var(--navy3);}
 .stat{padding:18px 24px;text-align:center;border-right:1px solid var(--navy3);position:relative;overflow:hidden;transition:background 0.2s;}
 .stat:last-child{border-right:none;}
@@ -99,8 +92,11 @@ th{font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.
 td{padding:11px 14px;border-bottom:1px solid #EEF2F8;vertical-align:middle;}
 tr.data-row td{transition:background 0.1s;cursor:pointer;}
 tr.data-row:hover td{background:#F5F8FF;}
+tr.data-row.declined-row td{opacity:0.5;}
+tr.data-row.declined-row:hover td{background:#FFF5F5;opacity:0.7;}
 tr.data-row:last-child td{border-bottom:none;}
 .region-hd td{background:var(--navy);color:var(--ice);font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;}
+.declined-section td{background:#FFF5F5;color:var(--no);font-family:var(--font-mono);font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:6px 14px;}
 .pi-name{font-weight:500;font-size:12px;color:var(--text);}
 .pi-inst{font-size:11px;color:var(--muted);margin-top:2px;}
 .country-lbl{font-family:var(--font-mono);font-size:11px;color:var(--muted);}
@@ -128,8 +124,6 @@ tr.data-row:last-child td{border-bottom:none;}
 .add-btn:hover{background:var(--frost);color:var(--blue);}
 .spinner{display:inline-block;width:9px;height:9px;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;border-radius:50%;animation:spin 0.6s linear infinite;margin-right:4px;}
 @keyframes spin{to{transform:rotate(360deg)}}
-
-/* MAP VIEW */
 #map-view{display:none;padding:24px 28px;animation:fadeIn 0.3s ease;}
 .map-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px;}
 .map-title{font-family:var(--font-head);font-size:16px;font-weight:600;color:var(--text);}
@@ -142,9 +136,6 @@ tr.data-row:last-child td{border-bottom:none;}
 .map-legend{display:flex;align-items:center;gap:20px;margin-top:14px;flex-wrap:wrap;}
 .legend-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--muted);}
 .legend-dot{width:12px;height:12px;border-radius:50%;flex-shrink:0;}
-#progress-legend{display:none;}
-
-/* Leaflet popup custom style */
 .leaflet-popup-content-wrapper{background:var(--navy2);border:1px solid var(--navy3);border-radius:10px;box-shadow:0 4px 20px rgba(11,24,41,0.4);padding:0;overflow:hidden;}
 .leaflet-popup-content{margin:0;padding:0;min-width:220px;}
 .leaflet-popup-tip-container{display:none;}
@@ -155,7 +146,6 @@ tr.data-row:last-child td{border-bottom:none;}
 .popup-pi{font-size:12px;color:var(--ice);margin-top:4px;line-height:1.4;}
 .popup-inst{font-size:11px;color:var(--muted);margin-top:2px;}
 .popup-score-bar{margin-top:10px;padding-top:10px;border-top:1px solid var(--navy3);}
-.popup-score-label{font-size:10px;color:var(--muted);margin-bottom:5px;font-family:var(--font-mono);}
 .popup-badges{display:flex;flex-wrap:wrap;gap:4px;margin-top:6px;}
 .popup-badge{font-size:10px;padding:2px 7px;border-radius:4px;border:1px solid;font-family:var(--font-body);}
 .popup-badge.yes{color:var(--yes);background:var(--yes-bg);border-color:var(--yes-bd);}
@@ -167,7 +157,6 @@ tr.data-row:last-child td{border-bottom:none;}
 .popup-score-row{display:flex;align-items:baseline;gap:4px;margin-bottom:6px;}
 .score-track{height:5px;background:rgba(255,255,255,0.1);border-radius:99px;overflow:hidden;}
 .score-fill{height:100%;border-radius:99px;transition:width 0.3s;}
-
 @media(max-width:768px){
   th:nth-child(5),th:nth-child(6),th:nth-child(8),td:nth-child(5),td:nth-child(6),td:nth-child(8){display:none}
   .content{padding:16px 12px}.topbar{padding:0 16px}
@@ -179,7 +168,6 @@ tr.data-row:last-child td{border-bottom:none;}
 </style>
 </head>
 <body>
-
 <div id="login-screen">
   <div class="login-card">
     <div class="login-logo">
@@ -196,7 +184,6 @@ tr.data-row:last-child td{border-bottom:none;}
     <div class="login-error" id="login-error"></div>
   </div>
 </div>
-
 <div id="app">
   <div class="topbar">
     <div class="logo">
@@ -222,7 +209,6 @@ tr.data-row:last-child td{border-bottom:none;}
       <button class="logout-btn" id="logout-btn">Sign out</button>
     </div>
   </div>
-
   <div class="stats-bar" id="stats-bar">
     <div class="stat"><div class="stat-n">—</div><div class="stat-l">Confirmed</div></div>
     <div class="stat"><div class="stat-n">—</div><div class="stat-l">Countries</div></div>
@@ -230,8 +216,6 @@ tr.data-row:last-child td{border-bottom:none;}
     <div class="stat"><div class="stat-n">—</div><div class="stat-l">Ethics approved</div></div>
     <div class="stat"><div class="stat-n gold">—</div><div class="stat-l">Data received</div></div>
   </div>
-
-  <!-- TABLE VIEW -->
   <div class="content" id="table-view">
     <div class="progress-wrap" id="progress-wrap"></div>
     <div class="toolbar">
@@ -265,8 +249,6 @@ tr.data-row:last-child td{border-bottom:none;}
       </button>
     </div>
   </div>
-
-  <!-- MAP VIEW -->
   <div id="map-view">
     <div class="map-header">
       <div>
@@ -280,12 +262,10 @@ tr.data-row:last-child td{border-bottom:none;}
     </div>
     <div id="leaflet-map"></div>
     <div class="map-legend">
-      <!-- Participants legend -->
       <div id="participants-legend" class="map-legend">
         <div class="legend-item"><div class="legend-dot" style="background:#3B6FD4"></div>Confirmed center</div>
         <div class="legend-item"><div class="legend-dot" style="background:#C9A84C;opacity:0.8"></div>Pending confirmation</div>
       </div>
-      <!-- Progress legend -->
       <div id="progress-legend" class="map-legend" style="display:none">
         <div class="legend-item"><div class="legend-dot" style="background:#15724A"></div>5–6 / 6 complete</div>
         <div class="legend-item"><div class="legend-dot" style="background:#2E86C1"></div>3–4 / 6 complete</div>
@@ -295,27 +275,28 @@ tr.data-row:last-child td{border-bottom:none;}
     </div>
   </div>
 </div>
-
 <script>
 const SUPABASE_URL = 'https://hljkdjncjtzrfnpwdwnv.supabase.co';
 const SUPABASE_KEY = 'sb_publishable_lwGm2pHvBrdXObiqkfmkfQ_gnOVcgmo';
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
-
-// Country → [lat, lng]
 const COORDS = {
   'Iceland':[64.9631,-19.0208],'Greece':[37.9838,23.7275],'Spain':[40.4168,-3.7038],
   'Norway':[59.9139,10.7522],'UK':[51.5074,-0.1278],'Czech Republic':[49.8175,15.4730],
   'Denmark':[55.6761,12.5683],'Germany':[51.1657,10.4515],'Netherlands':[52.3676,4.9041],
   'France':[46.2276,2.2137],'Austria':[47.5162,14.5501],'Sweden':[60.1282,18.6435],
-  'USA':[37.0902,-95.7129],'Canada':[56.1304,-106.3468],'Brazil':[-14.2350,-51.9253],
+  'Malta':[35.9375,14.3754],'Italy':[41.8719,12.5674],
+  'USA':[37.0902,-95.7129],'Canada':[56.1304,-106.3468],
+  'Brazil':[-14.2350,-51.9253],'Argentina':[-38.4161,-63.6167],
+  'Chile':[-35.6751,-71.5430],'Uruguay':[-32.5228,-55.7658],'Colombia':[4.5709,-74.2973],
+  'Mexico':[23.6345,-102.5528],
   'India':[20.5937,78.9629],'Japan':[36.2048,138.2529],'South Korea':[35.9078,127.7669],
   'Thailand':[15.8700,100.9925],'China':[35.8617,104.1954],'Australia':[-25.2744,133.7751],
+  'New Zealand':[-40.9006,174.8860],
   'Egypt':[26.8206,30.8025],'Morocco':[31.7917,-7.0926],'Tunisia':[33.8869,9.5375],
-  'Kenya':[-0.0236,37.9062],'South Africa':[-26.2041,28.0473],'Ghana':[7.9465,-1.0232]
+  'Kenya':[-0.0236,37.9062],'South Africa':[-26.2041,28.0473],'Ghana':[7.9465,-1.0232],
+  'Nigeria':[9.0820,8.6753]
 };
-
-// Jitter duplicate countries so pins don't stack
 const countryCount = {};
 function getCoords(country) {
   const base = COORDS[country] || [20, 0];
@@ -324,72 +305,22 @@ function getCoords(country) {
   const angle = (countryCount[country] - 1) * 137.5 * Math.PI / 180;
   return [base[0] + offset * Math.sin(angle), base[1] + offset * Math.cos(angle)];
 }
-
-const DEFAULTS = [
-  {region:"Europe",country:"Iceland",pi:"Kristinsson / Johannesdottir",inst:"University of Iceland",email:"sigurdur.kristinsson@landspitali.is",agreed:"Yes",protocol:"Yes",dta:"N/A",ethics:"Approved",data:"Yes",n:"75,000+",notes:"iStopMM anchor data"},
-  {region:"Europe",country:"Greece",pi:"Kastritis / Dimopoulos",inst:"Alexandra Hospital, Athens",email:"ekastritis@med.uoa.gr",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Spain",pi:"Bruno Paiva / Marta Lasa",inst:"Univ. of Navarra, Pamplona",email:"bpaiva@unav.es",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"~700",notes:"BM aspirates only in 25%"},
-  {region:"Europe",country:"Spain",pi:"Ramon Garcia Sanz",inst:"Univ. Hospital, Salamanca",email:"rgarsanz@usal.es",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Spain",pi:"Javier de la Rubia",inst:"La Fe Hospital, Valencia",email:"delarubia_jav@gva.es",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"BM aspirate only"},
-  {region:"Europe",country:"Norway",pi:"Schjesvold / Tobias",inst:"Oslo Univ. Hospital",email:"fredrik.schjesvold@ous-hf.no",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"UK",pi:"Yong / D'Sa / Khwaja / Kyriakou",inst:"UCL, London",email:"k.yong@ucl.ac.uk",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"UK",pi:"Jindriska Lindsay",inst:"East Kent NHS",email:"jindriska.lindsay@nhs.net",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"UK",pi:"Tassos Karadimitris",inst:"Imperial College, London",email:"a.karadimitris@imperial.ac.uk",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Europe",country:"Czech Republic",pi:"Jelinek / Hajek",inst:"Univ. Hospital, Ostrava",email:"tomas.jelinek@fnol.cz",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Denmark",pi:"Hammer / Præstekjær Cramer / Þorsteinsdóttir",inst:"Rigshospitalet, Copenhagen",email:"mathias.maennchen.hammer@regionh.dk",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation"},
-  {region:"Europe",country:"Germany",pi:"Elias Mai",inst:"Univ. Hospital, Heidelberg",email:"e.mai@uni-heidelberg.de",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Key methodological advisor"},
-  {region:"Europe",country:"Germany",pi:"Christian Buske",inst:"Univ. Hospital, Ulm",email:"christian.buske@uniklinik-ulm.de",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Netherlands",pi:"Monique Minnema",inst:"UMC Utrecht",email:"m.c.minnema@umcutrecht.nl",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IRB pending"},
-  {region:"Europe",country:"Netherlands",pi:"Kersten / Vos",inst:"Amsterdam UMC",email:"m.j.kersten@amsterdamumc.nl",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Netherlands",pi:"Liane te Boome",inst:"Haaglanden MC",email:"l.teboome@haaglandenmc.nl",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom April 15"},
-  {region:"Europe",country:"France",pi:"Olivier Tournilhac",inst:"CHU Clermont-Ferrand",email:"otournilhac@chu-clermontferrand.fr",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"France",pi:"Pierre Morel",inst:"CHU Amiens",email:"morel.pierre@chu-amiens.fr",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Limited imaging; practice variation"},
-  {region:"Europe",country:"Austria",pi:"Wolfgang Willenbacher",inst:"Tirol Kliniken, Innsbruck",email:"wolfgang.willenbacher@tirol-kliniken.at",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Europe",country:"Sweden",pi:"Lena Brandefors",inst:"Norrbotten",email:"lena.brandefors@norrbotten.se",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Regulatory complexity"},
-  {region:"North America",country:"USA",pi:"Natalia Neparidze",inst:"Yale University",email:"natalia.neparidze@yale.edu",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"North America",country:"USA",pi:"Malin Hultcrantz",inst:"MSK, New York",email:"hultcram@mskcc.org",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Zoom to schedule; PET cohort"},
-  {region:"North America",country:"Canada",pi:"Hira Mian",inst:"McMaster, Hamilton",email:"mianh@mcmaster.ca",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"North America",country:"Canada",pi:"Arleigh McCurdy",inst:"Ottawa Hospital",email:"amccurdy@toh.ca",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"North America",country:"Canada",pi:"Venner / Cowan",inst:"BC Cancer, Vancouver",email:"cvenner@bccancer.bc.ca",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"South America",country:"Brazil",pi:"Vania Hungria",inst:"Multi-center",email:"vhungria@gmail.com",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Exploring South America network"},
-  {region:"Asia",country:"India",pi:"Pankaj Malhotra",inst:"PGIMER, Chandigarh",email:"pmalhotra@pgimer.edu.in",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"IMAGe president"},
-  {region:"Asia",country:"India",pi:"Col. Uday Yanamandra + IMAGe",inst:"Armed Forces Medical College, Pune",email:"udayymc@gmail.com",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"100,000+",notes:"SIMPLE study; 32 IMAGe centers"},
-  {region:"Asia",country:"Japan",pi:"Masahiro Abe",inst:"Tokushima University",email:"abemasahiro@tokushima-u.ac.jp",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Asia",country:"Japan",pi:"Hiroshi Handa",inst:"Gunma University",email:"hhanda@gunma-u.ac.jp",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Asia",country:"Japan",pi:"Shinsuke Iida",inst:"Nagoya City University",email:"iida@med.nagoya-cu.ac.jp",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Outreach sent"},
-  {region:"Asia",country:"South Korea",pi:"Kihyun Kim / Dr. Yi",inst:"Samsung Medical Center, Seoul",email:"kihyun.kim@samsung.com",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Confirmed"},
-  {region:"Asia",country:"Thailand",pi:"Chutima Kunacheewa",inst:"Siriraj Hospital, Bangkok",email:"chutima.kun@mahidol.ac.th",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"LD WB CT + MRI/PET-CT"},
-  {region:"Asia",country:"China",pi:"Li Jian",inst:"PUMCH, Beijing",email:"lijian@pumch.cn",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Pacific",country:"Australia",pi:"Nick Weber",inst:"Royal Brisbane Hospital",email:"nick.weber@health.qld.gov.au",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:""},
-  {region:"Pacific",country:"Australia",pi:"Andrew Spencer",inst:"National Myeloma Registry",email:"andrew.spencer@monash.edu",agreed:"Pending",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Registry bias discussion ongoing"},
-  {region:"Africa",country:"Egypt",pi:"Mervat Mattar",inst:"Cairo University",email:"mermattar770@gmail.com",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol sent"},
-  {region:"Africa",country:"Morocco",pi:"Aissam El Maataoui",inst:"Univ. Ibn Zohr, Agadir",email:"a.elmaataoui@uiz.ac.ma",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol sent"},
-  {region:"Africa",country:"Tunisia",pi:"Yosra Ben Youssef",inst:"Farhat Hached Univ. Hospital, Sousse",email:"yosra.benyoussef@laposte.net",agreed:"Yes",protocol:"Pending",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol not yet sent"},
-  {region:"Africa",country:"Kenya",pi:"Malkit Riyat",inst:"Aga Khan University, Nairobi",email:"malkit.riyat@aku.edu",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol sent"},
-  {region:"Africa",country:"South Africa",pi:"Moosa Patel",inst:"Wits University, Johannesburg",email:"moosa.patel@wits.ac.za",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol sent"},
-  {region:"Africa",country:"Ghana",pi:"Lily Paemka",inst:"West African Centre for Cell Biology of Infectious Pathogens, Univ. of Ghana, Accra",email:"lpaemka@ug.edu.gh",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Email and protocol sent"},
-];
-
 const STATUS_CYCLE = {
   agreed:['Yes','Pending','No'],
   protocol:['Yes','Pending','No'],
-  dta:['Signed','Pending','N/A'],
+  dta:['Signed','Sent','Pending','N/A'],
   ethics:['Approved','Submitted','Pending','N/A'],
   data:['Yes','Partial','Pending','N/A'],
   crf:['Received','Pending','N/A']
 };
-
 let data=[], editingId=null, filterMode='all', currentView='table', mapMode='participants';
 let leafletMap=null, mapMarkers=[];
-
 function setSyncStatus(cls,html){
   const el=document.getElementById('sync-pill');
   el.className='sync-pill '+cls;
   el.innerHTML=html;
 }
-
 const ACCESS_PASSWORD = 'IMAGO2025';
-
 function doLogin(){
   const pw = document.getElementById('pw-input').value;
   document.getElementById('login-error').textContent = '';
@@ -402,164 +333,33 @@ function doLogin(){
     document.getElementById('pw-input').focus();
   }
 }
-
 function doLogout(){
   sessionStorage.removeItem('imago_auth');
   document.getElementById('app').style.display='none';
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('pw-input').value='';
 }
-
 async function loadData(){
   setSyncStatus('syncing','<span class="spinner"></span>Loading…');
   const {data:rows,error}=await sb.from('collaborators').select('*').order('id');
-  if(error){console.error('loadData error:',error);setSyncStatus('err','⚠ '+error.message);return;}
+  if(error){setSyncStatus('err','⚠ '+error.message);return;}
   if(rows.length===0){
-    // Only seed if we can confirm table is truly empty (do a count check)
-    const {count,error:ce}=await sb.from('collaborators').select('*',{count:'exact',head:true});
-    if(ce){setSyncStatus('err','⚠ '+ce.message);return;}
-    if(count===0){
-      await seedDefaults();
-    } else {
-      // Table has data but select returned 0 — RLS is blocking reads
-      setSyncStatus('err','⚠ RLS blocking reads — disable in Supabase');
-      console.error('RLS is blocking reads. Go to Supabase → SQL Editor and run: ALTER TABLE collaborators DISABLE ROW LEVEL SECURITY;');
-    }
+    setSyncStatus('err','⚠ No data found');
   } else {
     data=rows;
     setSyncStatus('ok','● Live');
     document.getElementById('ts').textContent='Synced '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'});
   }
 }
-
-async function seedDefaults(){
-  setSyncStatus('syncing','<span class="spinner"></span>Setting up…');
-  const {data:inserted,error}=await sb.from('collaborators').insert(DEFAULTS).select();
-  if(error){setSyncStatus('err','⚠ Setup failed');return;}
-  data=inserted;
-  setSyncStatus('ok','● Live');
-}
-
-async function migrateData(){
-  // Migration: update emails, fix Africa rows, remove Kamal, add new centers
-  // Runs once after load; safe to run repeatedly (idempotent checks)
-
-  const EMAIL_MAP = {
-    "Kristinsson": "sigurdur.kristinsson@landspitali.is",
-    "Kastritis": "ekastritis@med.uoa.gr",
-    "Bruno Paiva": "bpaiva@unav.es",
-    "Garcia Sanz": "rgarsanz@usal.es",
-    "Javier de la Rubia": "delarubia_jav@gva.es",
-    "Schjesvold": "fredrik.schjesvold@ous-hf.no",
-    "Yong / D'Sa": "k.yong@ucl.ac.uk",
-    "Jindriska Lindsay": "jindriska.lindsay@nhs.net",
-    "Karadimitris": "a.karadimitris@imperial.ac.uk",
-    "Jelinek": "tomas.jelinek@fnol.cz",
-    "Hammer": "mathias.maennchen.hammer@regionh.dk",
-    "Elias Mai": "e.mai@uni-heidelberg.de",
-    "Christian Buske": "christian.buske@uniklinik-ulm.de",
-    "Monique Minnema": "m.c.minnema@umcutrecht.nl",
-    "Kersten": "m.j.kersten@amsterdamumc.nl",
-    "te Boome": "l.teboome@haaglandenmc.nl",
-    "Tournilhac": "otournilhac@chu-clermontferrand.fr",
-    "Pierre Morel": "morel.pierre@chu-amiens.fr",
-    "Willenbacher": "wolfgang.willenbacher@tirol-kliniken.at",
-    "Brandefors": "lena.brandefors@norrbotten.se",
-    "Neparidze": "natalia.neparidze@yale.edu",
-    "Hultcrantz": "hultcram@mskcc.org",
-    "Hira Mian": "mianh@mcmaster.ca",
-    "McCurdy": "amccurdy@toh.ca",
-    "Venner": "cvenner@bccancer.bc.ca",
-    "Hungria": "vhungria@gmail.com",
-    "Pankaj Malhotra": "pmalhotra@pgimer.edu.in",
-    "Yanamandra": "udayymc@gmail.com",
-    "Masahiro Abe": "abemasahiro@tokushima-u.ac.jp",
-    "Handa": "hhanda@gunma-u.ac.jp",
-    "Iida": "iida@med.nagoya-cu.ac.jp",
-    "Kihyun Kim": "kihyun.kim@samsung.com",
-    "Kunacheewa": "chutima.kun@mahidol.ac.th",
-    "Li Jian": "lijian@pumch.cn",
-    "Nick Weber": "nick.weber@health.qld.gov.au",
-    "Andrew Spencer": "andrew.spencer@monash.edu",
-    "Mervat Mattar": "mermattar770@gmail.com",
-    "Ben Youssef": "yosra.benyoussef@laposte.net",
-    "Malkit Riyat": "malkit.riyat@aku.edu",
-  };
-
-  const promises = [];
-
-  for(const row of data){
-    const updates = {};
-
-    // Populate emails where missing
-    if(!row.email){
-      for(const [key, email] of Object.entries(EMAIL_MAP)){
-        if((row.pi||'').includes(key)){
-          updates.email = email;
-          break;
-        }
-      }
-    }
-
-    // Fix Africa rows that were previously Pending/Pending
-    if(row.pi && row.pi.includes('Mervat Mattar') && row.agreed !== 'Yes'){
-      updates.agreed = 'Yes'; updates.protocol = 'Yes';
-      updates.notes = 'Protocol sent';
-    }
-    if(row.pi && row.pi.includes('Ben Youssef') && row.country === 'Tunisia'){
-      updates.pi = 'Yosra Ben Youssef';
-      updates.inst = 'Farhat Hached Univ. Hospital, Sousse';
-      updates.agreed = 'Yes';
-      updates.notes = 'Protocol not yet sent';
-      if(!row.email) updates.email = 'yosra.benyoussef@laposte.net';
-    }
-    if(row.pi && row.pi.includes('Malkit Riyat') && row.agreed !== 'Yes'){
-      updates.agreed = 'Yes'; updates.protocol = 'Yes';
-      updates.notes = 'Protocol sent';
-      if(!row.email) updates.email = 'malkit.riyat@aku.edu';
-    }
-
-    if(Object.keys(updates).length > 0){
-      Object.assign(row, updates);
-      promises.push(sb.from('collaborators').update(updates).eq('id', row.id));
-    }
-  }
-
-  // Remove Kamal Doghmi
-  const kamal = data.find(d => (d.pi||'').includes('Kamal Doghmi'));
-  if(kamal){
-    data = data.filter(d => d.id !== kamal.id);
-    promises.push(sb.from('collaborators').delete().eq('id', kamal.id));
-  }
-
-  // Add new centers if not already present
-  const newCenters = [
-    {region:"Africa",country:"Morocco",pi:"Aissam El Maataoui",inst:"Univ. Ibn Zohr, Agadir",email:"a.elmaataoui@uiz.ac.ma",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol sent"},
-    {region:"Africa",country:"South Africa",pi:"Moosa Patel",inst:"Wits University, Johannesburg",email:"moosa.patel@wits.ac.za",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Protocol sent"},
-    {region:"Africa",country:"Ghana",pi:"Lily Paemka",inst:"West African Centre for Cell Biology of Infectious Pathogens, Univ. of Ghana, Accra",email:"lpaemka@ug.edu.gh",agreed:"Yes",protocol:"Yes",dta:"Pending",ethics:"Pending",data:"Pending",n:"",notes:"Email and protocol sent"},
-  ];
-
-  for(const nc of newCenters){
-    const exists = data.some(d => (d.pi||'').includes(nc.pi.split(' ')[1]||nc.pi));
-    if(!exists){
-      const {data:inserted, error} = await sb.from('collaborators').insert(nc).select().single();
-      if(!error && inserted) data.push(inserted);
-    }
-  }
-
-  if(promises.length > 0) await Promise.all(promises);
-}
-
 function badgeClass(v){
   if(v==='Yes'||v==='Approved'||v==='Signed') return 'badge-yes';
-  if(v==='Pending'||v==='Submitted'||v==='Partial') return 'badge-pend';
+  if(v==='Pending'||v==='Submitted'||v==='Partial'||v==='Sent') return 'badge-pend';
   if(v==='No') return 'badge-no';
   return 'badge-na';
 }
 function badge(v,field,id){
   return `<button class="badge ${badgeClass(v)}" data-cycle="${field}" data-id="${id}" title="Click to change">${v}</button>`;
 }
-
 async function cycle(id,field){
   const row=data.find(d=>d.id===id);if(!row)return;
   const opts=STATUS_CYCLE[field];
@@ -568,14 +368,9 @@ async function cycle(id,field){
   if(currentView==='map') renderMap();
   setSyncStatus('syncing','<span class="spinner"></span>Saving…');
   const {error}=await sb.from('collaborators').update({[field]:row[field]}).eq('id',id);
-  if(error){
-    console.error('Supabase save error:', error);
-    setSyncStatus('err','⚠ '+error.message);
-  } else {
-    setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));
-  }
+  if(error){setSyncStatus('err','⚠ '+error.message);}
+  else{setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));}
 }
-
 function renderStats(){
   const confirmed=data.filter(d=>d.agreed==='Yes').length;
   const countries=new Set(data.filter(d=>d.agreed==='Yes').map(d=>d.country)).size;
@@ -589,7 +384,6 @@ function renderStats(){
     <div class="stat"><div class="stat-n">${ethDone}</div><div class="stat-l">Ethics approved</div></div>
     <div class="stat"><div class="stat-n gold">${dataIn}</div><div class="stat-l">Data received</div></div>`;
 }
-
 function renderProgress(){
   const total=data.length,yes=data.filter(d=>d.agreed==='Yes').length;
   const pend=data.filter(d=>d.agreed==='Pending').length,no=data.filter(d=>d.agreed==='No').length;
@@ -604,18 +398,24 @@ function renderProgress(){
       <div class="progress-seg seg-no" style="width:${no/total*100}%"></div>
     </div>`;
 }
-
 function setFilter(mode){
   filterMode=mode;
   ['all','agreed','dta','ethics','data'].forEach(m=>document.getElementById('pill-'+m).classList.toggle('on',m===mode));
   render();
 }
-
 function render(){
   const q=document.getElementById('search').value.toLowerCase();
   const reg=document.getElementById('reg').value;
   const REGION_ORDER = ['Europe','North America','South America','Asia','Pacific','Africa'];
-  const filtered=data.filter(d=>{
+  const active = data.filter(d => d.agreed !== 'No');
+  const declined = data.filter(d => d.agreed === 'No');
+  const sortFn = (a,b) => {
+    const ri = r => REGION_ORDER.indexOf(r) === -1 ? 99 : REGION_ORDER.indexOf(r);
+    if(ri(a.region)!==ri(b.region)) return ri(a.region)-ri(b.region);
+    return (a.country||'').localeCompare(b.country||'');
+  };
+  const allSorted = [...active.sort(sortFn), ...declined.sort(sortFn)];
+  const filtered = allSorted.filter(d=>{
     const matchQ=!q||[d.country,d.pi,d.inst,d.notes,d.region].some(s=>(s||'').toLowerCase().includes(q));
     const matchR=!reg||d.region===reg;
     let matchF=true;
@@ -624,16 +424,21 @@ function render(){
     if(filterMode==='ethics') matchF=d.ethics==='Pending'||d.ethics==='Submitted';
     if(filterMode==='data') matchF=d.data==='Pending'||d.data==='Partial';
     return matchQ&&matchR&&matchF;
-  }).sort((a,b)=>{
-    const ri = r => REGION_ORDER.indexOf(r) === -1 ? 99 : REGION_ORDER.indexOf(r);
-    if(ri(a.region)!==ri(b.region)) return ri(a.region)-ri(b.region);
-    return (a.country||'').localeCompare(b.country||'');
   });
   const tbody=document.getElementById('tbody');
   if(!filtered.length){tbody.innerHTML=`<tr><td colspan="11" class="empty-state">No centers match.</td></tr>`;return;}
-  let html='',lastReg='';
+  let html='', lastReg='', inDeclined=false;
   filtered.forEach(d=>{
-    if(d.region!==lastReg){html+=`<tr class="region-hd"><td colspan="11">${d.region}</td></tr>`;lastReg=d.region;}
+    const isDeclined = d.agreed === 'No';
+    if(isDeclined && !inDeclined){
+      inDeclined=true;
+      lastReg='';
+      html+=`<tr class="declined-section"><td colspan="11">Declined / No response</td></tr>`;
+    }
+    if(!isDeclined && d.region!==lastReg){
+      html+=`<tr class="region-hd"><td colspan="11">${d.region}</td></tr>`;
+      lastReg=d.region;
+    }
     if(editingId===d.id){
       const mkSel=(f,opts)=>`<select id="e-${f}-${d.id}">${opts.map(o=>`<option${d[f]===o?' selected':''}>${o}</option>`).join('')}</select>`;
       html+=`<tr class="edit-row">
@@ -643,7 +448,7 @@ function render(){
         <input id="e-inst-${d.id}" value="${d.inst||''}" placeholder="Institution" style="margin-top:4px"></td>
         <td>${mkSel('agreed',['Yes','Pending','No'])}</td>
         <td>${mkSel('protocol',['Yes','Pending','No'])}</td>
-        <td>${mkSel('dta',['Signed','Pending','N/A'])}</td>
+        <td>${mkSel('dta',['Signed','Sent','Pending','N/A'])}</td>
         <td>${mkSel('ethics',['Approved','Submitted','Pending','N/A'])}</td>
         <td>${mkSel('data',['Yes','Partial','Pending','N/A'])}</td>
         <td><input id="e-email-${d.id}" value="${d.email||''}" placeholder="email@institution.com"></td>
@@ -657,7 +462,7 @@ function render(){
         </div></td>
       </tr>`;
     } else {
-      html+=`<tr class="data-row" data-id="${d.id}">
+      html+=`<tr class="data-row${isDeclined?' declined-row':''}" data-id="${d.id}">
         <td><span class="country-lbl">${d.country||''}</span></td>
         <td><div class="pi-name">${d.pi||''}</div><div class="pi-inst">${d.inst||''}</div></td>
         <td>${badge(d.agreed,'agreed',d.id)}</td>
@@ -674,10 +479,8 @@ function render(){
   });
   tbody.innerHTML=html;
 }
-
 function startEdit(id){editingId=id;render();}
 function cancelEdit(){editingId=null;render();}
-
 async function saveEdit(id){
   const row=data.find(d=>d.id===id);if(!row)return;
   const updates={
@@ -699,17 +502,15 @@ async function saveEdit(id){
   editingId=null;renderStats();renderProgress();render();
   setSyncStatus('syncing','<span class="spinner"></span>Saving…');
   const {error}=await sb.from('collaborators').update(updates).eq('id',id);
-  if(error){console.error('saveEdit error:',error);setSyncStatus('err','⚠ '+error.message);}
+  if(error){setSyncStatus('err','⚠ '+error.message);}
   else{setSyncStatus('ok','● Saved '+new Date().toLocaleTimeString('en-GB',{hour:'2-digit',minute:'2-digit'}));}
 }
-
 async function deleteRow(id){
   if(!confirm('Remove this center?'))return;
   data=data.filter(d=>d.id!==id);
   editingId=null;renderStats();renderProgress();render();
   await sb.from('collaborators').delete().eq('id',id);
 }
-
 async function addRow(){
   const nr={region:'Europe',country:'',pi:'',inst:'',agreed:'Pending',protocol:'Pending',dta:'Pending',ethics:'Pending',data:'Pending',n:'',notes:''};
   setSyncStatus('syncing','<span class="spinner"></span>Adding…');
@@ -721,9 +522,6 @@ async function addRow(){
   setFilter('all');
   setTimeout(()=>{const el=document.getElementById(`e-country-${inserted.id}`);if(el)el.focus();},50);
 }
-
-// ── VIEW SWITCHING ──────────────────────────────────────────────────────────
-
 function switchView(view){
   currentView=view;
   document.getElementById('table-view').style.display = view==='table' ? 'block' : 'none';
@@ -732,9 +530,6 @@ function switchView(view){
   document.getElementById('vbtn-map').classList.toggle('active', view==='map');
   if(view==='map') initOrRefreshMap();
 }
-
-// ── MAP ─────────────────────────────────────────────────────────────────────
-
 function scoreCenter(d){
   let s=0;
   if(d.agreed==='Yes') s++;
@@ -745,67 +540,49 @@ function scoreCenter(d){
   if(d.crf==='Received') s++;
   return s;
 }
-
 function scoreColor(s){
   if(s>=5) return '#15724A';
   if(s>=3) return '#2E86C1';
   if(s>=1) return '#E8A020';
   return '#9B1F30';
 }
-
 function makePinSvg(color, size=14){
   const r = size/2;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${size+8}" height="${size+8}" viewBox="0 0 ${size+8} ${size+8}">
     <circle cx="${r+4}" cy="${r+4}" r="${r}" fill="${color}" stroke="white" stroke-width="2" opacity="0.92"/>
   </svg>`;
 }
-
 function badgeHtml(label, v){
   let cls='na';
   if(v==='Yes'||v==='Approved'||v==='Signed') cls='yes';
-  else if(v==='Pending'||v==='Submitted'||v==='Partial') cls='pend';
+  else if(v==='Pending'||v==='Submitted'||v==='Partial'||v==='Sent') cls='pend';
   else if(v==='No') cls='no';
   return `<span class="popup-badge ${cls}">${label}: ${v}</span>`;
 }
-
 function initOrRefreshMap(){
   if(!leafletMap){
     leafletMap = L.map('leaflet-map', {
-      center:[20,10],
-      zoom:2,
-      minZoom:1,
-      maxZoom:8,
-      zoomControl:true,
-      attributionControl:false,
+      center:[20,10],zoom:2,minZoom:1,maxZoom:8,
+      zoomControl:true,attributionControl:false,
       worldCopyJump:true,
-      maxBounds:[[-90,-200],[90,200]],
-      maxBoundsViscosity:0.8
+      maxBounds:[[-90,-200],[90,200]],maxBoundsViscosity:0.8
     });
-    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{
-      subdomains:'abcd',
-      maxZoom:19
-    }).addTo(leafletMap);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png',{subdomains:'abcd',maxZoom:19}).addTo(leafletMap);
     L.control.attribution({prefix:'© OpenStreetMap · CartoDB'}).addTo(leafletMap);
   }
   renderMap();
 }
-
 function renderMap(){
-  // Clear existing markers
   mapMarkers.forEach(m=>m.remove());
   mapMarkers=[];
-
-  // Reset jitter counter
   Object.keys(countryCount).forEach(k=>delete countryCount[k]);
-
   const total=data.length;
   const countries=new Set(data.map(d=>d.country)).size;
   document.getElementById('map-subtitle').textContent=`${total} centers across ${countries} countries`;
-
   data.forEach(d=>{
+    if(d.agreed==='No') return;
     const coords=getCoords(d.country);
     if(!coords) return;
-
     let pinColor, pinSize;
     if(mapMode==='participants'){
       pinColor = d.agreed==='Yes' ? '#3B6FD4' : 'rgba(201,168,76,0.85)';
@@ -815,18 +592,9 @@ function renderMap(){
       pinColor=scoreColor(s);
       pinSize=14;
     }
-
-    const icon=L.divIcon({
-      html:makePinSvg(pinColor, pinSize),
-      className:'',
-      iconSize:[pinSize+8, pinSize+8],
-      iconAnchor:[(pinSize+8)/2, (pinSize+8)/2]
-    });
-
+    const icon=L.divIcon({html:makePinSvg(pinColor,pinSize),className:'',iconSize:[pinSize+8,pinSize+8],iconAnchor:[(pinSize+8)/2,(pinSize+8)/2]});
     const score=scoreCenter(d);
     const pct=Math.round(score/6*100);
-    const scoreBarColor=scoreColor(score);
-
     const popupContent = mapMode==='participants'
       ? `<div class="popup-inner">
           <div class="popup-region">${d.region}</div>
@@ -840,43 +608,32 @@ function renderMap(){
           <div class="popup-region">${d.region}</div>
           <div class="popup-country">${d.country}</div>
           <div class="popup-pi">${d.pi||''}</div>
-          <div class="popup-inst">${d.inst||''}</div>
           <div class="popup-score-bar">
             <div class="popup-score-row">
               <span class="popup-score-num">${score}</span>
               <span class="popup-score-of">/ 6 milestones</span>
             </div>
-            <div class="score-track"><div class="score-fill" style="width:${pct}%;background:${scoreBarColor}"></div></div>
+            <div class="score-track"><div class="score-fill" style="width:${pct}%;background:${scoreColor(score)}"></div></div>
             <div class="popup-badges" style="margin-top:8px">
-              ${badgeHtml('Agreed',d.agreed)}
-              ${badgeHtml('Protocol',d.protocol)}
-              ${badgeHtml('DTA',d.dta)}
-              ${badgeHtml('Ethics',d.ethics)}
-              ${badgeHtml('Data',d.data)}
-              ${badgeHtml('CRF',d.crf||'Pending')}
+              ${badgeHtml('Agreed',d.agreed)}${badgeHtml('Protocol',d.protocol)}
+              ${badgeHtml('DTA',d.dta)}${badgeHtml('Ethics',d.ethics)}
+              ${badgeHtml('Data',d.data)}${badgeHtml('CRF',d.crf||'Pending')}
             </div>
           </div>
         </div>`;
-
     const marker=L.marker(coords,{icon}).addTo(leafletMap);
     marker.bindPopup(popupContent,{maxWidth:280,minWidth:220,closeButton:true});
     mapMarkers.push(marker);
   });
-
-  // Toggle legend visibility
   document.getElementById('participants-legend').style.display = mapMode==='participants' ? 'flex' : 'none';
   document.getElementById('progress-legend').style.display = mapMode==='progress' ? 'flex' : 'none';
 }
-
 function setMapMode(mode){
   mapMode=mode;
   document.getElementById('mmbtn-participants').classList.toggle('active', mode==='participants');
   document.getElementById('mmbtn-progress').classList.toggle('active', mode==='progress');
   if(leafletMap) renderMap();
 }
-
-// ── BOOT ────────────────────────────────────────────────────────────────────
-
 async function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app').style.display='block';
@@ -886,10 +643,7 @@ async function showApp(){
     if(!editingId){await loadData();renderStats();renderProgress();render();if(currentView==='map')renderMap();}
   }).subscribe();
 }
-
 if(sessionStorage.getItem('imago_auth')==='1') showApp();
-
-// All event listeners — no inline onclick attributes
 document.getElementById('login-btn').addEventListener('click', doLogin);
 document.getElementById('logout-btn').addEventListener('click', doLogout);
 document.getElementById('pw-input').addEventListener('keydown', e=>{ if(e.key==='Enter') doLogin(); });
@@ -905,8 +659,6 @@ document.getElementById('pill-data').addEventListener('click', ()=>setFilter('da
 document.getElementById('add-btn').addEventListener('click', addRow);
 document.getElementById('mmbtn-participants').addEventListener('click', ()=>setMapMode('participants'));
 document.getElementById('mmbtn-progress').addEventListener('click', ()=>setMapMode('progress'));
-
-// Delegate all dynamic row events via tbody
 document.getElementById('tbody').addEventListener('click', e=>{
   const cycleBtn = e.target.closest('[data-cycle]');
   if(cycleBtn){ e.stopPropagation(); cycle(+cycleBtn.dataset.id, cycleBtn.dataset.cycle); return; }
